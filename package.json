@@ -1,0 +1,61 @@
+{
+  "name": "consultant-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One workspace for an independent consultant: bookings, meetings and emails turned into tasks, a task board, a weekly timeline and alerts.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "next dev -p ${PORT:-3000}",
+    "build": "next build && npm run build:scripts",
+    "build:scripts": "node scripts/bundle-scripts.mjs",
+    "start": "next start -p ${PORT:-3000}",
+    "worker": "tsx worker/index.ts",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:reset": "tsx scripts/migrate.ts --reset && tsx scripts/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@tiptap/extension-list": "^3.31.3",
+    "@tiptap/extensions": "^3.31.3",
+    "@tiptap/pm": "^3.31.3",
+    "@tiptap/react": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
+    "lucide-react": "^1.48.0",
+    "next": "^15.5.26",
+    "pg": "^8.23.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "swr": "^2.5.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "^22.20.4",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "autoprefixer": "^10.6.1",
+    "esbuild": "^0.28.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.26",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^3.4.19",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.2"
+  },
+  "overrides": {
+    "postcss": "$postcss"
+  }
+}

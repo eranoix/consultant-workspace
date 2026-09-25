@@ -1,0 +1,78 @@
+# docker compose up --build   ->  http://localhost:3000  (sign in with the demo account)
+#
+# Four services from one image: the database, a one-shot job that migrates and
+# seeds it, the web app and the cron worker. Web and worker only start after
+# the migration job has finished successfully.
+name: ${COMPOSE_PROJECT_NAME:-consultant-workspace}
+
+x-app-env: &app-env
+  DATABASE_URL: postgres://workspace_app:${APP_DB_PASSWORD:-workspace_app}@db:5432/workspace
+  DATABASE_ADMIN_URL: postgres://workspace_admin:${POSTGRES_PASSWORD:-workspace_admin}@db:5432/workspace
+  SESSION_SECRET: ${SESSION_SECRET:-docker-compose-demo-secret-change-me-please}
+  DEMO_PASSWORD: ${DEMO_PASSWORD:-workspace-demo}
+  ENCRYPTION_KEY: ${ENCRYPTION_KEY:-bG9jYWwtZGVtby1rZXktb25seS0zMi1ieXRlcyEhISE=}
+  PUBLIC_URL: ${PUBLIC_URL:-http://localhost:3000}
+  LLM_PROVIDER: ${LLM_PROVIDER:-mock}
+  CALENDAR_PROVIDER: ${CALENDAR_PROVIDER:-mock}
+  MAIL_PROVIDER: ${MAIL_PROVIDER:-mock}
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: workspace_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-workspace_admin}
+      POSTGRES_DB: workspace
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U workspace_admin -d workspace"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    build: .
+    image: consultant-workspace:local
+    command: ["sh", "-c", "node dist/migrate.mjs && node dist/seed.mjs --if-empty"]
+    environment: *app-env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  web:
+    image: consultant-workspace:local
+    environment: *app-env
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      start_period: 20s
+      retries: 5
+    restart: unless-stopped
+
+  worker:
+    image: consultant-workspace:local
+    command: ["node", "dist/worker.mjs"]
+    environment: *app-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "dist/worker.mjs", "--healthcheck"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  db-data:

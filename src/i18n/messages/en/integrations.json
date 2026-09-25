@@ -1,0 +1,27 @@
+{
+  "title": "Integrations",
+  "subtitle": "Connected accounts. Refresh tokens are encrypted with AES-256-GCM before they are stored, and only you can read yours.",
+  "probe": {
+    "title": "Provider status",
+    "latency": "checked in {ms} ms"
+  },
+  "connect": "Connect",
+  "disconnect": "Disconnect",
+  "refresh": "Refresh token",
+  "notConnected": "Not connected",
+  "fingerprint": "fingerprint",
+  "keyVersion": "key {v}",
+  "refreshed": "refreshed {when}",
+  "needsRotation": "Old key: refresh to re-encrypt",
+  "status": {
+    "connected": "Connected",
+    "error": "Error",
+    "revoked": "Revoked"
+  },
+  "toast": {
+    "connected": "Connected (mock provider)",
+    "refreshed": "Token refreshed",
+    "rotated": "Token refreshed and re-encrypted with the current key"
+  },
+  "footnote": "These providers are mocks: connecting mints a fake refresh token the way an OAuth callback would. Storage, encryption and rotation are real."
+}

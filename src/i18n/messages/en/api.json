@@ -1,0 +1,58 @@
+{
+  "title": "Board API",
+  "subtitle": "Tokens let another person or tool create and move tasks, with only the permissions you grant.",
+  "docsLink": "API docs",
+  "new": "New token",
+  "list": "Tokens",
+  "name": "Name",
+  "nameHint": "Who or what uses it, for example: Theo, weekly report script.",
+  "role": "Role",
+  "permissions": "Permissions",
+  "lastUsed": "Last used",
+  "expires": "Expires after",
+  "expiresCol": "Expires",
+  "days": "days",
+  "never": "Never",
+  "revoke": "Revoke",
+  "confirmRevoke": "Revoke this token? Anything using it stops working at once.",
+  "copy": "Copy",
+  "copied": "Copied",
+  "roles": {
+    "viewer": "Viewer",
+    "contributor": "Contributor",
+    "manager": "Manager",
+    "custom": "Custom",
+    "customHint": "Pick the exact permissions"
+  },
+  "state": {
+    "active": "Active",
+    "revoked": "Revoked",
+    "expired": "Expired"
+  },
+  "created": {
+    "title": "Token created",
+    "once": "Copy it now. It is shown only once; only a hash is stored.",
+    "done": "I have copied it"
+  },
+  "docs": {
+    "title": "Board API",
+    "intro": "A small HTTP API over the board. Every call is checked against the token's permissions and shows up on the board in real time.",
+    "auth": "Authentication",
+    "authText": "Create a token in Board API settings and send it as a bearer token.",
+    "endpoints": "Endpoints",
+    "method": "Method",
+    "path": "Path",
+    "what": "What it does",
+    "roles": "Roles",
+    "rolesNote": "A custom token can combine any permissions; every custom token can also read tasks.",
+    "examples": "Examples",
+    "exList": "List what is to do",
+    "exCreate": "Create a task",
+    "exMove": "Move a task",
+    "exJs": "From JavaScript",
+    "exErrors": "Errors",
+    "handoff": "Instructions for another tool",
+    "handoffText": "Paste this into any script or assistant tool that can make HTTP requests, together with a token."
+  },
+  "neverUsed": "Not yet"
+}

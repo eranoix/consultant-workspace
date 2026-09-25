@@ -1,0 +1,65 @@
+{
+  "greeting": {
+    "morning": "Good morning, {name}",
+    "afternoon": "Good afternoon, {name}",
+    "evening": "Good evening, {name}"
+  },
+  "weekSoFar": "{hours} logged this week",
+  "stats": {
+    "toReview": "to review",
+    "dueToday": "due today",
+    "overdue": "overdue",
+    "inProgress": "in progress",
+    "loggedToday": "logged today"
+  },
+  "insights": {
+    "title": "What needs you next",
+    "jobs_late_one": "A scheduled job is late: {names}",
+    "jobs_late_other": "{count} scheduled jobs are late: {names}",
+    "overdue_one": "1 task is overdue",
+    "overdue_other": "{count} tasks are overdue",
+    "review": "{meetings} meetings and {emails} emails are waiting, with {tasks} candidate tasks",
+    "due_today_one": "1 task is due today",
+    "due_today_other": "{count} tasks are due today",
+    "critical_alerts_one": "1 critical alert is open",
+    "critical_alerts_other": "{count} critical alerts are open",
+    "no_client_one": "1 open task has no client",
+    "no_client_other": "{count} open tasks have no client",
+    "process_week": "The week is not processed yet ({hours} h logged)",
+    "sync_week": "This week's timeline is not synced to the calendar",
+    "all_clear": "Nothing urgent. A good moment for deep work.",
+    "action": {
+      "jobs_late": "Check jobs",
+      "overdue": "Open",
+      "review": "Review",
+      "due_today": "Open",
+      "critical_alerts": "Open alerts",
+      "no_client": "Fix",
+      "process_week": "Process",
+      "sync_week": "Sync",
+      "all_clear": "Open board"
+    }
+  },
+  "alerts": {
+    "title": "Alerts"
+  },
+  "open": "Open",
+  "board": {
+    "title": "Board",
+    "more": "{count} more"
+  },
+  "goals": {
+    "title": "Goals today",
+    "today": "today",
+    "none": "Nothing scheduled today."
+  },
+  "timeline": {
+    "title": "Today",
+    "nextBookings": "Next bookings"
+  },
+  "review": {
+    "title": "Approval queue",
+    "tasks": "candidate tasks from {meetings} meetings and {emails} emails",
+    "cta": "Start reviewing"
+  }
+}

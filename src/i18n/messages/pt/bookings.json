@@ -1,0 +1,43 @@
+{
+  "title": "Agendamentos",
+  "subtitle": "O que foi agendado pela página pública. Horários em {tz}.",
+  "publicPage": "Abrir página pública",
+  "list": "Agendamentos",
+  "upcoming": "Próximos",
+  "past": "Passados",
+  "empty": "Nenhum agendamento",
+  "cancelled": "Cancelado",
+  "confirmCancel": "Cancelar este agendamento? O evento do calendário também é removido.",
+  "services": "Serviços e calendários",
+  "servicesHint": "Cada serviço agenda em um calendário, e os horários ocupados dele saem dos horários livres.",
+  "calendarFor": "Calendário de {service}",
+  "noCalendar": "Sem calendário",
+  "hours": "Horário de trabalho",
+  "closed": "Fechado",
+  "toast": {
+    "cancelled": "Agendamento cancelado",
+    "calendar": "Calendário atualizado"
+  },
+  "public": {
+    "title": "Agende um horário",
+    "lead": "Escolha o que você precisa. Horários em {tz}.",
+    "pickDay": "Escolha um dia",
+    "pickTime": "Horários livres em {day}",
+    "noSlots": "Nenhum horário livre neste dia.",
+    "details": "Seus dados para {time} ({duration} min)",
+    "name": "Nome",
+    "email": "E-mail",
+    "company": "Empresa (opcional)",
+    "notes": "Algo que eu deva saber? (opcional)",
+    "confirm": "Confirmar agendamento",
+    "confirmed": "Agendado",
+    "manageHint": "Guarde este link para cancelar se os planos mudarem.",
+    "manage": "Gerenciar seu agendamento",
+    "back": "Todos os serviços",
+    "cancel": "Cancelar este agendamento",
+    "status": {
+      "confirmed": "Confirmado",
+      "cancelled": "Cancelado"
+    }
+  }
+}

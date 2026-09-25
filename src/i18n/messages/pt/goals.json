@@ -1,0 +1,39 @@
+{
+  "title": "Metas",
+  "subtitle": "Objetivos com resultados-chave; os recorrentes viram uma caixa por dia.",
+  "newObjective": "Novo objetivo",
+  "addKr": "Resultado-chave",
+  "keyResult": "Resultado-chave",
+  "progress": "Feito",
+  "noKrs": "Nenhum resultado-chave ainda.",
+  "empty": "Nenhuma meta ainda",
+  "dueOn": "Prazo {date}",
+  "confirmDelete": "Excluir este objetivo e seus resultados-chave?",
+  "views": {
+    "list": "Lista",
+    "kanban": "Kanban"
+  },
+  "columns": {
+    "open": "Aberto",
+    "doing": "Fazendo",
+    "done": "Feito"
+  },
+  "completed": {
+    "title": "Concluídas, por dia",
+    "empty": "Nada concluído nos últimos 30 dias.",
+    "count_one": "1 feita",
+    "count_other": "{count} feitas"
+  },
+  "form": {
+    "newObjective": "Novo objetivo",
+    "newKr": "Novo resultado-chave para: {objective}",
+    "repeat": "Repete",
+    "once": "Uma vez",
+    "daily": "Todo dia",
+    "weekly": "Semanal",
+    "monthly": "Mensal",
+    "starts": "Começa",
+    "due": "Prazo",
+    "count": "Vezes"
+  }
+}

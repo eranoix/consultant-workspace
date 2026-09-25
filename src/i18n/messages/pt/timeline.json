@@ -1,0 +1,38 @@
+{
+  "title": "Timeline",
+  "subtitle": "Semana de {from} a {to}. Compartilhada entre todos os admins, sincronizada com um calendário.",
+  "prev": "Anterior",
+  "next": "Próxima",
+  "thisWeek": "Esta semana",
+  "process": "Processar minha semana",
+  "sync": "Sincronizar com o calendário",
+  "weekend": "Mostrar fim de semana",
+  "processedBadge": "Processada",
+  "lastSync": "Sincronizada {when}",
+  "neverSynced": "Ainda não sincronizada",
+  "notSynced": "Alterado desde a última sincronização",
+  "synced": "Sincronizado com {calendar}: {created} novos, {updated} atualizados, {deleted} removidos, {unchanged} iguais",
+  "backlog": {
+    "title": "Backlog",
+    "allOpen": "Todas abertas",
+    "hint": "Arraste uma tarefa para um dia para planejá-la.",
+    "empty": "Nenhuma tarefa encontrada"
+  },
+  "edit": {
+    "title": "Editar bloco",
+    "start": "Início",
+    "duration": "Duração (min)",
+    "ends": "Termina às {time} ({duration})",
+    "invalid": "De 5 a 720 minutos",
+    "notes": "Notas",
+    "openTask": "Abrir a tarefa"
+  },
+  "report": {
+    "title": "Relatório da semana",
+    "show": "Ver o relatório da semana",
+    "unassigned": "{time} sem lado",
+    "merged_one": "1 bloco consecutivo combinado",
+    "merged_other": "{count} blocos consecutivos combinados",
+    "clean": "Nada a corrigir: todo bloco tem cliente e nada se sobrepõe."
+  }
+}

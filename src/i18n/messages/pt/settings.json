@@ -1,0 +1,54 @@
+{
+  "saved": "Salvo",
+  "general": {
+    "title": "Geral",
+    "subtitle": "Quem você é, qual é a sua firma parceira e para onde vai a timeline.",
+    "profile": "Perfil",
+    "name": "Seu nome",
+    "practice": "Sua consultoria",
+    "timeZone": "Fuso horário",
+    "partner": "Firma parceira",
+    "partnerHint": "E-mails destes domínios são trabalho da parceira, seja qual for o assunto.",
+    "partnerName": "Nome",
+    "shortName": "Nome curto (tags)",
+    "domains": "Domínios",
+    "timelineCalendar": "Calendário da timeline",
+    "timelineCalendarHint": "Sincronizar escreve a semana aqui, com todo bloco marcado como ocupado.",
+    "language": "Idioma"
+  },
+  "clients": {
+    "title": "Clientes e lados",
+    "subtitle": "Cada cliente pertence a um lado. Domínios e apelidos ligam reuniões e e-mails a eles.",
+    "new": "Novo cliente",
+    "list": "Clientes",
+    "name": "Nome",
+    "color": "Cor",
+    "domains": "Domínios de e-mail",
+    "domainsHint": "Separados por vírgula, ex. brightwater.example.com",
+    "aliases": "Apelidos",
+    "aliasesHint": "Nomes usados nas notas, separados por vírgula",
+    "engagement": "Contrato atual",
+    "openTasks": "Tarefas abertas",
+    "inactive": "Inativo"
+  },
+  "overrides": {
+    "title": "Regras fixas",
+    "hint": "Uma regra fixa sempre vence a inferência: use para um cliente que escreve de um endereço pessoal, ou um codinome que só você conhece.",
+    "pattern": "remetente, domínio ou palavra",
+    "add": "Adicionar regra",
+    "kinds": {
+      "sender": "Remetente",
+      "domain": "Domínio",
+      "keyword": "Palavra"
+    }
+  },
+  "shortcuts": {
+    "title": "Atalhos de teclado",
+    "subtitle": "Uma tecla, ou duas em sequência (g depois b).",
+    "conflict": "Conflito",
+    "invalid": "Inválido",
+    "help": "Use um ou dois caracteres separados por espaço. Pressione ? em qualquer lugar para ver a lista.",
+    "restore": "Restaurar padrões",
+    "reset": "Padrões restaurados"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "title": "Alerts",
+  "subtitle": "Rules you can edit, delivered through the outbox, with jobs that watch each other.",
+  "tabs": {
+    "alerts": "Alerts",
+    "rules": "Rules",
+    "outbox": "Outbox",
+    "jobs": "Jobs and intake"
+  },
+  "liveTitle": "Open alerts",
+  "resolvedTitle": "Resolved",
+  "showResolved": "Show resolved",
+  "showLive": "Show open",
+  "empty": "No open alerts",
+  "emptyResolved": "Nothing resolved yet",
+  "open": "Open",
+  "status": {
+    "acknowledged": "Acknowledged"
+  },
+  "actions": {
+    "acknowledge": "Acknowledge",
+    "snooze": "Snooze 1 hour",
+    "resolve": "Resolve"
+  },
+  "toast": {
+    "resolved": "Alert resolved"
+  },
+  "severity": {
+    "info": "Info",
+    "warning": "Warning",
+    "critical": "Critical"
+  },
+  "events": {
+    "email_received": "Email received",
+    "email_unanswered": "Email thread unanswered",
+    "task_overdue": "Task overdue",
+    "task_due_today": "Task due today",
+    "cron_late": "Scheduled job late",
+    "intake_stalled": "Intake stalled",
+    "booking_created": "Booking created"
+  },
+  "ops": {
+    "equals": "is",
+    "not_equals": "is not",
+    "contains": "contains",
+    "not_contains": "does not contain",
+    "gt": ">",
+    "gte": ">=",
+    "lt": "<",
+    "lte": "<=",
+    "in": "is one of"
+  },
+  "channels": {
+    "outbox": "In-app outbox",
+    "email": "Email",
+    "whatsapp": "WhatsApp"
+  },
+  "rules": {
+    "title": "Rules",
+    "new": "New rule",
+    "edit": "Edit rule",
+    "name": "Alert title",
+    "nameHint": "Use {field} to fill in values, for example {subject}.",
+    "event": "When this happens",
+    "severity": "Severity",
+    "cooldown": "Cooldown (min)",
+    "when": "Fire when",
+    "all": "all",
+    "any": "any",
+    "ofThese": "of these match:",
+    "addCondition": "Add condition",
+    "channels": "Deliver to",
+    "test": "Try it with a sample event (field=value, one per line)",
+    "runTest": "Test",
+    "wouldFire": "Would fire",
+    "wouldNotFire": "Would not fire",
+    "system": "System",
+    "enabled": "On",
+    "and": "and",
+    "or": "or",
+    "openCount_one": "1 open",
+    "openCount_other": "{count} open",
+    "lastFired": "last fired {when}",
+    "confirmDelete": "Delete this rule?"
+  },
+  "outbox": {
+    "title": "Outbox",
+    "hint": "Every alert lands here first. Email and WhatsApp use their webhooks when configured, and fall back to this outbox when they are not.",
+    "subject": "Message",
+    "channel": "Channel",
+    "via": "Delivered",
+    "when": "When",
+    "view": "Show message"
+  },
+  "intake": {
+    "email": "Email intake",
+    "meeting": "Meeting notes intake",
+    "notes": "Notes sync",
+    "runs": "runs in the last 24 h",
+    "created_one": "1 new item",
+    "created_other": "{count} new items",
+    "failed_one": "1 failed run",
+    "failed_other": "{count} failed runs",
+    "lastOk": "Last success {when}",
+    "never": "Never succeeded"
+  },
+  "jobs": {
+    "title": "Scheduled jobs",
+    "hint": "Each job has a watcher. The dead-man switch watches the others, and alerts-evaluate watches the dead-man switch. This page recomputes the same check itself, so it works even if the worker is down.",
+    "unwatched": "No working watcher for: {names}",
+    "job": "Job",
+    "health": "Health",
+    "lastOk": "Last success",
+    "watchedBy": "Watched by",
+    "history": "Recent runs",
+    "every": "every {interval}, grace {grace}",
+    "late": "{minutes} min late",
+    "runNow": "Run now",
+    "requested": "Requested: the worker runs it on its next tick",
+    "state": {
+      "ok": "Healthy",
+      "late": "Late",
+      "failing": "Failing",
+      "never": "Never ran",
+      "disabled": "Disabled"
+    }
+  }
+}

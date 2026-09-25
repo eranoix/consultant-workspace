@@ -1,0 +1,27 @@
+{
+  "title": "Integrações",
+  "subtitle": "Contas conectadas. Os refresh tokens são cifrados com AES-256-GCM antes de serem guardados, e só você lê os seus.",
+  "probe": {
+    "title": "Status dos provedores",
+    "latency": "checado em {ms} ms"
+  },
+  "connect": "Conectar",
+  "disconnect": "Desconectar",
+  "refresh": "Renovar token",
+  "notConnected": "Não conectado",
+  "fingerprint": "impressão",
+  "keyVersion": "chave {v}",
+  "refreshed": "renovado {when}",
+  "needsRotation": "Chave antiga: renove para recifrar",
+  "status": {
+    "connected": "Conectado",
+    "error": "Erro",
+    "revoked": "Revogado"
+  },
+  "toast": {
+    "connected": "Conectado (provedor simulado)",
+    "refreshed": "Token renovado",
+    "rotated": "Token renovado e recifrado com a chave atual"
+  },
+  "footnote": "Estes provedores são simulados: conectar cria um refresh token falso como um callback OAuth faria. Armazenamento, cifragem e rotação são reais."
+}

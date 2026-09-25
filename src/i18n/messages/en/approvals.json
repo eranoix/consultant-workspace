@@ -1,0 +1,90 @@
+{
+  "title": "Approvals",
+  "subtitle": "Meetings and emails become candidate tasks. Nothing reaches the board until you approve it.",
+  "tabs": {
+    "meetings": "Meetings",
+    "emails": "Emails",
+    "tasks": "Tasks",
+    "reviewed": "Reviewed"
+  },
+  "checkMail": "Check mailbox",
+  "paste": {
+    "button": "Add meeting notes",
+    "title": "Add meeting notes or a transcript",
+    "meetingTitle": "Meeting title",
+    "notes": "Notes",
+    "hint": "Lines starting with Decision: and Action: become key decisions and candidate tasks.",
+    "submit": "Summarize"
+  },
+  "kind": {
+    "meeting": "Meeting",
+    "email": "Email"
+  },
+  "reviewed": "Reviewed",
+  "approve": "Approve",
+  "noAction": "No action",
+  "undo": "Undo",
+  "decision": {
+    "approved": "Approved",
+    "no_action": "No action",
+    "pending": "Pending"
+  },
+  "tag": {
+    "approved": "Approved",
+    "noAction": "No action"
+  },
+  "filter": {
+    "all": "All"
+  },
+  "toClassify_one": "1 to classify",
+  "toClassify_other": "{count} to classify",
+  "toClassify": "{count} to classify",
+  "taskSummary": "{approved} approved · {noAction} no action · {total} total",
+  "classified": "{done} of {total} tasks classified",
+  "needAll": "Every task needs Approve or No action first",
+  "done": "Done",
+  "confirm": {
+    "title": "Finish this review?",
+    "body": "{approved} approved tasks go to the board backlog. {noAction} are closed with no action.",
+    "ok": "Finish review"
+  },
+  "due": "due {date}",
+  "onBoard": "On board: {status}",
+  "from": "From",
+  "participants": "Participants",
+  "topics": "Topics",
+  "keyDecisions": "Key decisions",
+  "summarizedBy": "Summarized by the {provider} summarizer",
+  "candidateTasks_one": "1 candidate task",
+  "candidateTasks_other": "{count} candidate tasks",
+  "candidateTasks": "{count} candidate tasks",
+  "noTasks": "No tasks found in this one.",
+  "thread": "Thread",
+  "youReplied": "You replied",
+  "showOriginal": "Show original",
+  "hideOriginal": "Hide original",
+  "pending": "Pending",
+  "provenance": {
+    "override": "Set by a fixed rule ({value})",
+    "domain": "Inferred from the sender domain {value}",
+    "partner": "Partner firm sender ({value})",
+    "participant": "Inferred from a participant at {value}",
+    "content": "Inferred from the content (mentions {value})",
+    "manual": "Set by hand",
+    "default": "No evidence found: defaulted to own practice"
+  },
+  "empty": {
+    "queue": "The queue is clear",
+    "hint": "New meetings and emails appear here after the next intake run.",
+    "tasks": "No candidate tasks waiting",
+    "reviewed": "Nothing reviewed yet"
+  },
+  "toast": {
+    "undone": "Decision undone",
+    "completed_one": "Review finished: 1 task sent to the board",
+    "completed_other": "Review finished: {count} tasks sent to the board",
+    "cascaded": "Client and side updated on the pending tasks too",
+    "checked_one": "1 new item",
+    "checked_other": "{count} new items"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "title": "Board",
+  "subtitle": "Everything approved, created by hand or sent through the API.",
+  "newTask": "New task",
+  "create": "Create task",
+  "search": "Search tasks",
+  "allClients": "All clients",
+  "count_one": "1 task",
+  "count_other": "{count} tasks",
+  "columns": {
+    "backlog": "Backlog",
+    "todo": "To do",
+    "doing": "Doing",
+    "review": "Review",
+    "done": "Done"
+  },
+  "fields": {
+    "title": "Title",
+    "status": "Status",
+    "priority": "Priority",
+    "due": "Due date",
+    "estimate": "Estimate (min)",
+    "description": "Description"
+  },
+  "priority": {
+    "low": "Low",
+    "normal": "Normal",
+    "high": "High"
+  },
+  "origin": {
+    "manual": "Created by hand",
+    "approval": "From approval",
+    "api": "Created through the API",
+    "email": "email",
+    "meeting": "meeting"
+  },
+  "sort": {
+    "label": "Sort",
+    "manual": "Manual order",
+    "due_asc": "Due date, soonest",
+    "due_desc": "Due date, latest",
+    "newest": "Newest first"
+  },
+  "dueToday": "Today",
+  "emptyColumn": "Nothing here",
+  "filterOverdue": "Overdue only",
+  "filterToday": "Due today only",
+  "confirmDelete": "Delete this task?",
+  "scheduled": "{hours} h on the timeline",
+  "fromSource": "From: {title}",
+  "projects": {
+    "button": "Active projects",
+    "title": "Active projects",
+    "hint": "Clients and engagements. Inactive clients are hidden from pickers but keep their history.",
+    "addEngagement": "Add engagement",
+    "open_one": "1 open",
+    "open_other": "{count} open",
+    "active": "Active"
+  },
+  "toast": {
+    "created": "Task created",
+    "saved": "Task saved",
+    "deleted": "Task deleted",
+    "moved": "Moved to {column}"
+  }
+}

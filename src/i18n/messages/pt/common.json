@@ -1,0 +1,19 @@
+{
+  "cancel": "Cancelar",
+  "client": "Cliente",
+  "close": "Fechar",
+  "create": "Criar",
+  "delete": "Excluir",
+  "edit": "Editar",
+  "loading": "Carregando...",
+  "noClient": "Sem cliente",
+  "remove": "Remover",
+  "save": "Salvar",
+  "side": {
+    "all": "Todos",
+    "direct": "Cliente próprio",
+    "label": "Lado",
+    "partner": "Firma parceira",
+    "unknown": "Lado não definido"
+  }
+}

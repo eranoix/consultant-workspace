@@ -1,0 +1,32 @@
+{
+  "product": "Consultant Workspace",
+  "navLabel": "Main navigation",
+  "language": "Switch language",
+  "signOut": "Sign out",
+  "hubs": {
+    "command": "Command center",
+    "schedule": "Schedule",
+    "settings": "Settings"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "approvals": "Approvals",
+    "board": "Board",
+    "alerts": "Alerts",
+    "timeline": "Timeline",
+    "goals": "Goals",
+    "notes": "Notes",
+    "bookings": "Bookings",
+    "general": "General",
+    "clients": "Clients and sides",
+    "integrations": "Integrations",
+    "api": "Board API",
+    "shortcuts": "Shortcuts",
+    "settings": "Settings"
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "help": "Show this list",
+    "customize": "Change them in Settings, Shortcuts. Shortcuts are ignored while you type in a field."
+  }
+}

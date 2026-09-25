@@ -1,0 +1,32 @@
+{
+  "product": "Consultant Workspace",
+  "navLabel": "Navegação principal",
+  "language": "Trocar idioma",
+  "signOut": "Sair",
+  "hubs": {
+    "command": "Central de comando",
+    "schedule": "Agenda",
+    "settings": "Configurações"
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "approvals": "Aprovações",
+    "board": "Quadro",
+    "alerts": "Alertas",
+    "timeline": "Timeline",
+    "goals": "Metas",
+    "notes": "Notas",
+    "bookings": "Agendamentos",
+    "general": "Geral",
+    "clients": "Clientes e lados",
+    "integrations": "Integrações",
+    "api": "API do Quadro",
+    "shortcuts": "Atalhos",
+    "settings": "Configurações"
+  },
+  "shortcuts": {
+    "title": "Atalhos de teclado",
+    "help": "Mostrar esta lista",
+    "customize": "Altere em Configurações, Atalhos. Os atalhos são ignorados enquanto você digita em um campo."
+  }
+}

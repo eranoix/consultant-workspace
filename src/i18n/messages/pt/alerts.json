@@ -1,0 +1,128 @@
+{
+  "title": "Alertas",
+  "subtitle": "Regras editáveis, entregues pela caixa de saída, com jobs que vigiam uns aos outros.",
+  "tabs": {
+    "alerts": "Alertas",
+    "rules": "Regras",
+    "outbox": "Caixa de saída",
+    "jobs": "Jobs e entrada"
+  },
+  "liveTitle": "Alertas abertos",
+  "resolvedTitle": "Resolvidos",
+  "showResolved": "Ver resolvidos",
+  "showLive": "Ver abertos",
+  "empty": "Nenhum alerta aberto",
+  "emptyResolved": "Nada resolvido ainda",
+  "open": "Abrir",
+  "status": {
+    "acknowledged": "Reconhecido"
+  },
+  "actions": {
+    "acknowledge": "Reconhecer",
+    "snooze": "Adiar 1 hora",
+    "resolve": "Resolver"
+  },
+  "toast": {
+    "resolved": "Alerta resolvido"
+  },
+  "severity": {
+    "info": "Info",
+    "warning": "Aviso",
+    "critical": "Crítico"
+  },
+  "events": {
+    "email_received": "E-mail recebido",
+    "email_unanswered": "Conversa sem resposta",
+    "task_overdue": "Tarefa atrasada",
+    "task_due_today": "Tarefa vence hoje",
+    "cron_late": "Job agendado atrasado",
+    "intake_stalled": "Entrada parada",
+    "booking_created": "Agendamento criado"
+  },
+  "ops": {
+    "equals": "é",
+    "not_equals": "não é",
+    "contains": "contém",
+    "not_contains": "não contém",
+    "gt": ">",
+    "gte": ">=",
+    "lt": "<",
+    "lte": "<=",
+    "in": "é um de"
+  },
+  "channels": {
+    "outbox": "Caixa de saída",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp"
+  },
+  "rules": {
+    "title": "Regras",
+    "new": "Nova regra",
+    "edit": "Editar regra",
+    "name": "Título do alerta",
+    "nameHint": "Use {field} para preencher valores, por exemplo {subject}.",
+    "event": "Quando isto acontecer",
+    "severity": "Severidade",
+    "cooldown": "Intervalo (min)",
+    "when": "Disparar quando",
+    "all": "todas",
+    "any": "qualquer uma",
+    "ofThese": "destas valerem:",
+    "addCondition": "Adicionar condição",
+    "channels": "Entregar em",
+    "test": "Teste com um evento de exemplo (campo=valor, um por linha)",
+    "runTest": "Testar",
+    "wouldFire": "Dispararia",
+    "wouldNotFire": "Não dispararia",
+    "system": "Sistema",
+    "enabled": "Ligada",
+    "and": "e",
+    "or": "ou",
+    "openCount_one": "1 aberto",
+    "openCount_other": "{count} abertos",
+    "lastFired": "último disparo {when}",
+    "confirmDelete": "Excluir esta regra?"
+  },
+  "outbox": {
+    "title": "Caixa de saída",
+    "hint": "Todo alerta passa por aqui primeiro. E-mail e WhatsApp usam seus webhooks quando configurados e voltam para esta caixa quando não estão.",
+    "subject": "Mensagem",
+    "channel": "Canal",
+    "via": "Entregue",
+    "when": "Quando",
+    "view": "Ver mensagem"
+  },
+  "intake": {
+    "email": "Entrada de e-mails",
+    "meeting": "Entrada de notas de reunião",
+    "notes": "Sincronização de notas",
+    "runs": "execuções nas últimas 24 h",
+    "created_one": "1 item novo",
+    "created_other": "{count} itens novos",
+    "failed_one": "1 execução com falha",
+    "failed_other": "{count} execuções com falha",
+    "lastOk": "Último sucesso {when}",
+    "never": "Nunca teve sucesso"
+  },
+  "jobs": {
+    "title": "Jobs agendados",
+    "hint": "Cada job tem um vigia. O dead-man switch vigia os outros, e o alerts-evaluate vigia o dead-man switch. Esta página refaz a mesma checagem sozinha, então funciona mesmo com o worker parado.",
+    "unwatched": "Sem vigia funcionando para: {names}",
+    "job": "Job",
+    "health": "Saúde",
+    "lastOk": "Último sucesso",
+    "watchedBy": "Vigiado por",
+    "history": "Execuções recentes",
+    "every": "a cada {interval}, tolerância {grace}",
+    "late": "{minutes} min atrasado",
+    "runNow": "Rodar agora",
+    "requested": "Pedido: o worker roda no próximo ciclo",
+    "state": {
+      "ok": "Saudável",
+      "late": "Atrasado",
+      "failing": "Falhando",
+      "never": "Nunca rodou",
+      "disabled": "Desligado"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "title": "Timeline",
+  "subtitle": "Week of {from} to {to}. Shared by every admin, synced to one calendar.",
+  "prev": "Previous",
+  "next": "Next",
+  "thisWeek": "This week",
+  "process": "Process my week",
+  "sync": "Sync to calendar",
+  "weekend": "Show weekend",
+  "processedBadge": "Processed",
+  "lastSync": "Synced {when}",
+  "neverSynced": "Not synced yet",
+  "notSynced": "Changed since the last sync",
+  "synced": "Synced to {calendar}: {created} new, {updated} updated, {deleted} removed, {unchanged} unchanged",
+  "backlog": {
+    "title": "Backlog",
+    "allOpen": "All open",
+    "hint": "Drag a task onto a day to plan it.",
+    "empty": "No tasks match"
+  },
+  "edit": {
+    "title": "Edit block",
+    "start": "Start",
+    "duration": "Duration (min)",
+    "ends": "Ends at {time} ({duration})",
+    "invalid": "5 to 720 minutes",
+    "notes": "Notes",
+    "openTask": "Open the task"
+  },
+  "report": {
+    "title": "Week report",
+    "show": "Show the week report",
+    "unassigned": "{time} without a side",
+    "merged_one": "1 back-to-back block merged",
+    "merged_other": "{count} back-to-back blocks merged",
+    "clean": "Nothing to fix: every block has a client and nothing overlaps."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "title": "Notas",
+  "subtitle": "Pastas, texto rico e sincronização de mão única da pasta Notes do e-mail.",
+  "sync": "Sincronizar do e-mail",
+  "new": "Nova nota",
+  "folders": "Pastas",
+  "newFolder": "Nova pasta",
+  "folderName": "Nome da pasta",
+  "all": "Todas as notas",
+  "deleteFolder": "Excluir pasta",
+  "confirmDeleteFolder": "Excluir esta pasta? As notas vão para a pasta acima.",
+  "confirmDelete": "Excluir esta nota?",
+  "dragHint": "Arraste uma pasta sobre outra para aninhar, ou sobre Todas as notas para levá-la ao topo. Arraste notas para as pastas para arquivá-las.",
+  "search": "Buscar notas",
+  "emptyFolder": "Nenhuma nota aqui",
+  "untitled": "Sem título",
+  "pick": "Escolha uma nota",
+  "pickHint": "Ou comece uma nova.",
+  "expand": "Expandir",
+  "collapse": "Recolher",
+  "pin": "Fixar",
+  "placeholder": "Escreva algo...",
+  "fromMail": "Do e-mail",
+  "missingUpstream": "Saiu da caixa de e-mail, mantida aqui",
+  "status": {
+    "saved": "Salvo",
+    "saving": "Salvando...",
+    "dirty": "Editando",
+    "error": "Não salvo"
+  },
+  "toolbar": {
+    "heading": "Título",
+    "bold": "Negrito",
+    "italic": "Itálico",
+    "strike": "Tachado",
+    "bullets": "Lista",
+    "numbers": "Lista numerada",
+    "tasks": "Checklist",
+    "quote": "Citação",
+    "code": "Bloco de código",
+    "undo": "Desfazer",
+    "redo": "Refazer"
+  },
+  "toast": {
+    "folderMoved": "Pasta movida",
+    "noteMoved": "Nota movida",
+    "synced": "Sincronização: {created} novas, {unchanged} já estavam aqui"
+  }
+}

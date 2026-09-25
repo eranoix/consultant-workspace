@@ -1,0 +1,49 @@
+{
+  "title": "Notes",
+  "subtitle": "Folders, rich text, and a one-way sync from the Notes mail folder.",
+  "sync": "Sync from mail",
+  "new": "New note",
+  "folders": "Folders",
+  "newFolder": "New folder",
+  "folderName": "Folder name",
+  "all": "All notes",
+  "deleteFolder": "Delete folder",
+  "confirmDeleteFolder": "Delete this folder? Its notes move to the parent folder.",
+  "confirmDelete": "Delete this note?",
+  "dragHint": "Drag a folder onto another to nest it, or onto All notes to move it to the top. Drag notes onto folders to file them.",
+  "search": "Search notes",
+  "emptyFolder": "No notes here",
+  "untitled": "Untitled",
+  "pick": "Pick a note",
+  "pickHint": "Or start a new one.",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "pin": "Pin",
+  "placeholder": "Write something...",
+  "fromMail": "From mail",
+  "missingUpstream": "Gone from the mailbox, kept here",
+  "status": {
+    "saved": "Saved",
+    "saving": "Saving...",
+    "dirty": "Editing",
+    "error": "Not saved"
+  },
+  "toolbar": {
+    "heading": "Heading",
+    "bold": "Bold",
+    "italic": "Italic",
+    "strike": "Strikethrough",
+    "bullets": "Bullet list",
+    "numbers": "Numbered list",
+    "tasks": "Checklist",
+    "quote": "Quote",
+    "code": "Code block",
+    "undo": "Undo",
+    "redo": "Redo"
+  },
+  "toast": {
+    "folderMoved": "Folder moved",
+    "noteMoved": "Note moved",
+    "synced": "Mail sync: {created} new, {unchanged} already here"
+  }
+}

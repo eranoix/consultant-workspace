@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Typecheck, lint, unit tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm audit --audit-level=high
+
+  e2e:
+    name: End-to-end (ephemeral Postgres)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: workspace_admin
+          POSTGRES_PASSWORD: workspace_admin
+          POSTGRES_DB: workspace
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U workspace_admin -d workspace"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      CI: 'true'
+      DATABASE_URL: postgres://workspace_app:workspace_app@127.0.0.1:5432/workspace
+      DATABASE_ADMIN_URL: postgres://workspace_admin:workspace_admin@127.0.0.1:5432/workspace
+      SESSION_SECRET: ci-only-session-secret-that-is-long-enough
+      ENCRYPTION_KEY: bG9jYWwtZGVtby1rZXktb25seS0zMi1ieXRlcyEhISE=
+      DEMO_PASSWORD: workspace-demo
+      PUBLIC_URL: http://127.0.0.1:5512
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      # Migrations run twice on purpose: the second run must be a no-op.
+      - run: npm run db:migrate && npm run db:migrate
+      - run: npm run db:seed
+      - run: npm run build
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+  image:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t consultant-workspace:ci .

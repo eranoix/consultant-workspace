@@ -1,0 +1,39 @@
+{
+  "title": "Goals",
+  "subtitle": "Objectives with key results; recurring key results become one checkbox per day.",
+  "newObjective": "New objective",
+  "addKr": "Key result",
+  "keyResult": "Key result",
+  "progress": "Done",
+  "noKrs": "No key results yet.",
+  "empty": "No goals yet",
+  "dueOn": "Due {date}",
+  "confirmDelete": "Delete this objective and its key results?",
+  "views": {
+    "list": "List",
+    "kanban": "Kanban"
+  },
+  "columns": {
+    "open": "Open",
+    "doing": "Doing",
+    "done": "Done"
+  },
+  "completed": {
+    "title": "Completed, by day",
+    "empty": "Nothing completed in the last 30 days.",
+    "count_one": "1 done",
+    "count_other": "{count} done"
+  },
+  "form": {
+    "newObjective": "New objective",
+    "newKr": "New key result for: {objective}",
+    "repeat": "Repeats",
+    "once": "Once",
+    "daily": "Every day",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "starts": "Starts",
+    "due": "Due",
+    "count": "Times"
+  }
+}

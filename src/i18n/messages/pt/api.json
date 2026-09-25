@@ -1,0 +1,58 @@
+{
+  "title": "API do Quadro",
+  "subtitle": "Tokens deixam outra pessoa ou ferramenta criar e mover tarefas, só com as permissões que você der.",
+  "docsLink": "Documentação",
+  "new": "Novo token",
+  "list": "Tokens",
+  "name": "Nome",
+  "nameHint": "Quem ou o que usa, por exemplo: Theo, script de relatório.",
+  "role": "Função",
+  "permissions": "Permissões",
+  "lastUsed": "Último uso",
+  "expires": "Expira em",
+  "expiresCol": "Expira",
+  "days": "dias",
+  "never": "Nunca",
+  "revoke": "Revogar",
+  "confirmRevoke": "Revogar este token? O que usa ele para de funcionar na hora.",
+  "copy": "Copiar",
+  "copied": "Copiado",
+  "roles": {
+    "viewer": "Leitura",
+    "contributor": "Colaborador",
+    "manager": "Gestor",
+    "custom": "Personalizado",
+    "customHint": "Escolha as permissões exatas"
+  },
+  "state": {
+    "active": "Ativo",
+    "revoked": "Revogado",
+    "expired": "Expirado"
+  },
+  "created": {
+    "title": "Token criado",
+    "once": "Copie agora. Ele aparece só uma vez; apenas o hash é guardado.",
+    "done": "Já copiei"
+  },
+  "docs": {
+    "title": "API do Quadro",
+    "intro": "Uma API HTTP pequena sobre o quadro. Cada chamada é checada contra as permissões do token e aparece no quadro em tempo real.",
+    "auth": "Autenticação",
+    "authText": "Crie um token nas configurações da API e envie como bearer token.",
+    "endpoints": "Endpoints",
+    "method": "Método",
+    "path": "Caminho",
+    "what": "O que faz",
+    "roles": "Funções",
+    "rolesNote": "Um token personalizado combina quaisquer permissões; todo token personalizado também lê tarefas.",
+    "examples": "Exemplos",
+    "exList": "Listar o que está a fazer",
+    "exCreate": "Criar uma tarefa",
+    "exMove": "Mover uma tarefa",
+    "exJs": "Em JavaScript",
+    "exErrors": "Erros",
+    "handoff": "Instruções para outra ferramenta",
+    "handoffText": "Cole isto em qualquer script ou ferramenta assistente que faça requisições HTTP, junto com um token."
+  },
+  "neverUsed": "Ainda não"
+}

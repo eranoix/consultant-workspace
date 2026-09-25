@@ -1,0 +1,66 @@
+{
+  "title": "Quadro",
+  "subtitle": "Tudo que foi aprovado, criado à mão ou enviado pela API.",
+  "newTask": "Nova tarefa",
+  "create": "Criar tarefa",
+  "search": "Buscar tarefas",
+  "allClients": "Todos os clientes",
+  "count_one": "1 tarefa",
+  "count_other": "{count} tarefas",
+  "columns": {
+    "backlog": "Backlog",
+    "todo": "A fazer",
+    "doing": "Fazendo",
+    "review": "Revisão",
+    "done": "Feito"
+  },
+  "fields": {
+    "title": "Título",
+    "status": "Status",
+    "priority": "Prioridade",
+    "due": "Prazo",
+    "estimate": "Estimativa (min)",
+    "description": "Descrição"
+  },
+  "priority": {
+    "low": "Baixa",
+    "normal": "Normal",
+    "high": "Alta"
+  },
+  "origin": {
+    "manual": "Criada à mão",
+    "approval": "Veio de aprovação",
+    "api": "Criada pela API",
+    "email": "e-mail",
+    "meeting": "reunião"
+  },
+  "sort": {
+    "label": "Ordenar",
+    "manual": "Ordem manual",
+    "due_asc": "Prazo, mais próximo",
+    "due_desc": "Prazo, mais distante",
+    "newest": "Mais recentes"
+  },
+  "dueToday": "Hoje",
+  "emptyColumn": "Nada aqui",
+  "filterOverdue": "Só atrasadas",
+  "filterToday": "Só as de hoje",
+  "confirmDelete": "Excluir esta tarefa?",
+  "scheduled": "{hours} h na timeline",
+  "fromSource": "De: {title}",
+  "projects": {
+    "button": "Projetos ativos",
+    "title": "Projetos ativos",
+    "hint": "Clientes e contratos. Clientes inativos somem das listas, mas mantêm o histórico.",
+    "addEngagement": "Adicionar contrato",
+    "open_one": "1 aberta",
+    "open_other": "{count} abertas",
+    "active": "Ativo"
+  },
+  "toast": {
+    "created": "Tarefa criada",
+    "saved": "Tarefa salva",
+    "deleted": "Tarefa excluída",
+    "moved": "Movida para {column}"
+  }
+}

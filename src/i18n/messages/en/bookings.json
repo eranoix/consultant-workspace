@@ -1,0 +1,43 @@
+{
+  "title": "Bookings",
+  "subtitle": "What people booked through the public page. Times in {tz}.",
+  "publicPage": "Open public page",
+  "list": "Bookings",
+  "upcoming": "Upcoming",
+  "past": "Past",
+  "empty": "No bookings",
+  "cancelled": "Cancelled",
+  "confirmCancel": "Cancel this booking? The calendar event is removed too.",
+  "services": "Services and calendars",
+  "servicesHint": "Each service books into one calendar, and that calendar's busy time is subtracted from its slots.",
+  "calendarFor": "Calendar for {service}",
+  "noCalendar": "No calendar",
+  "hours": "Working hours",
+  "closed": "Closed",
+  "toast": {
+    "cancelled": "Booking cancelled",
+    "calendar": "Calendar updated"
+  },
+  "public": {
+    "title": "Book a time",
+    "lead": "Pick what you need. Times are shown in {tz}.",
+    "pickDay": "Choose a day",
+    "pickTime": "Available times on {day}",
+    "noSlots": "No free times on this day.",
+    "details": "Your details for {time} ({duration} min)",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company (optional)",
+    "notes": "Anything I should know? (optional)",
+    "confirm": "Confirm booking",
+    "confirmed": "You are booked",
+    "manageHint": "Keep this link to cancel if plans change.",
+    "manage": "Manage your booking",
+    "back": "All services",
+    "cancel": "Cancel this booking",
+    "status": {
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-ink-50 text-ink-900;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-1;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-ink-200 bg-white shadow-card;
+  }
+  .input {
+    @apply w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 disabled:bg-ink-50;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium text-ink-600;
+  }
+  .kbd {
+    @apply inline-flex min-w-[1.4rem] items-center justify-center rounded border border-ink-200 bg-ink-50 px-1 font-mono text-[11px] text-ink-600;
+  }
+}
+
+/* Tiptap editor */
+.ProseMirror {
+  @apply min-h-[320px] outline-none;
+}
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply pointer-events-none float-left h-0 text-ink-400;
+}
+.ProseMirror ul[data-type='taskList'] {
+  @apply list-none pl-0;
+}
+.ProseMirror ul[data-type='taskList'] li {
+  @apply flex items-start gap-2;
+}
+.ProseMirror ul[data-type='taskList'] li > label {
+  @apply mt-1;
+}
+.ProseMirror ul[data-type='taskList'] li > div {
+  @apply flex-1;
+}
+.ProseMirror ul[data-type='taskList'] li > div > p {
+  @apply my-0;
+}
+
+@keyframes slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in {
+  animation: slide-in 160ms ease-out;
+}

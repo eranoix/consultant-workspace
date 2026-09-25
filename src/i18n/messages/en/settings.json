@@ -1,0 +1,54 @@
+{
+  "saved": "Saved",
+  "general": {
+    "title": "General",
+    "subtitle": "Who you are, who your partner firm is, and where the timeline goes.",
+    "profile": "Profile",
+    "name": "Your name",
+    "practice": "Your practice",
+    "timeZone": "Time zone",
+    "partner": "Partner firm",
+    "partnerHint": "Mail from these domains is partner work, whatever it mentions.",
+    "partnerName": "Name",
+    "shortName": "Short name (tags)",
+    "domains": "Domains",
+    "timelineCalendar": "Timeline calendar",
+    "timelineCalendarHint": "Sync to calendar writes the week here, every block marked busy.",
+    "language": "Language"
+  },
+  "clients": {
+    "title": "Clients and sides",
+    "subtitle": "Each client belongs to one side. Domains and aliases are how meetings and emails get matched to them.",
+    "new": "New client",
+    "list": "Clients",
+    "name": "Name",
+    "color": "Color",
+    "domains": "Email domains",
+    "domainsHint": "Comma separated, e.g. brightwater.example.com",
+    "aliases": "Aliases",
+    "aliasesHint": "Names the client goes by in notes, comma separated",
+    "engagement": "Current engagement",
+    "openTasks": "Open tasks",
+    "inactive": "Inactive"
+  },
+  "overrides": {
+    "title": "Fixed rules",
+    "hint": "A fixed rule always wins over inference: use it for a client who writes from a personal address, or a code name only you know.",
+    "pattern": "sender, domain or keyword",
+    "add": "Add rule",
+    "kinds": {
+      "sender": "Sender",
+      "domain": "Domain",
+      "keyword": "Keyword"
+    }
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "subtitle": "One key, or two keys pressed one after the other (g then b).",
+    "conflict": "Conflict",
+    "invalid": "Invalid",
+    "help": "Use one or two single characters separated by a space. Press ? anywhere to see the list.",
+    "restore": "Restore defaults",
+    "reset": "Defaults restored"
+  }
+}

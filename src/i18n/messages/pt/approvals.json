@@ -1,0 +1,90 @@
+{
+  "title": "Aprovações",
+  "subtitle": "Reuniões e e-mails viram tarefas candidatas. Nada chega ao quadro sem a sua aprovação.",
+  "tabs": {
+    "meetings": "Reuniões",
+    "emails": "E-mails",
+    "tasks": "Tarefas",
+    "reviewed": "Revisados"
+  },
+  "checkMail": "Verificar caixa",
+  "paste": {
+    "button": "Adicionar notas de reunião",
+    "title": "Adicionar notas ou transcrição",
+    "meetingTitle": "Título da reunião",
+    "notes": "Notas",
+    "hint": "Linhas que começam com Decision: e Action: viram decisões e tarefas candidatas.",
+    "submit": "Resumir"
+  },
+  "kind": {
+    "meeting": "Reunião",
+    "email": "E-mail"
+  },
+  "reviewed": "Revisado",
+  "approve": "Aprovar",
+  "noAction": "Sem ação",
+  "undo": "Desfazer",
+  "decision": {
+    "approved": "Aprovada",
+    "no_action": "Sem ação",
+    "pending": "Pendente"
+  },
+  "tag": {
+    "approved": "Aprovado",
+    "noAction": "Sem ação"
+  },
+  "filter": {
+    "all": "Todos"
+  },
+  "toClassify_one": "1 para classificar",
+  "toClassify_other": "{count} para classificar",
+  "toClassify": "{count} para classificar",
+  "taskSummary": "{approved} aprovadas · {noAction} sem ação · {total} no total",
+  "classified": "{done} de {total} tarefas classificadas",
+  "needAll": "Cada tarefa precisa de Aprovar ou Sem ação antes",
+  "done": "Concluir",
+  "confirm": {
+    "title": "Concluir esta revisão?",
+    "body": "{approved} tarefas aprovadas vão para o backlog do quadro. {noAction} são fechadas sem ação.",
+    "ok": "Concluir revisão"
+  },
+  "due": "vence {date}",
+  "onBoard": "No quadro: {status}",
+  "from": "De",
+  "participants": "Participantes",
+  "topics": "Tópicos",
+  "keyDecisions": "Decisões",
+  "summarizedBy": "Resumido pelo resumidor {provider}",
+  "candidateTasks_one": "1 tarefa candidata",
+  "candidateTasks_other": "{count} tarefas candidatas",
+  "candidateTasks": "{count} tarefas candidatas",
+  "noTasks": "Nenhuma tarefa encontrada aqui.",
+  "thread": "Conversa",
+  "youReplied": "Você respondeu",
+  "showOriginal": "Ver original",
+  "hideOriginal": "Ocultar original",
+  "pending": "Pendente",
+  "provenance": {
+    "override": "Definido por uma regra fixa ({value})",
+    "domain": "Inferido pelo domínio do remetente {value}",
+    "partner": "Remetente da firma parceira ({value})",
+    "participant": "Inferido por um participante em {value}",
+    "content": "Inferido pelo conteúdo (menciona {value})",
+    "manual": "Definido à mão",
+    "default": "Sem evidência: assumido como prática própria"
+  },
+  "empty": {
+    "queue": "A fila está vazia",
+    "hint": "Novas reuniões e e-mails aparecem aqui após a próxima leitura.",
+    "tasks": "Nenhuma tarefa candidata esperando",
+    "reviewed": "Nada revisado ainda"
+  },
+  "toast": {
+    "undone": "Decisão desfeita",
+    "completed_one": "Revisão concluída: 1 tarefa enviada ao quadro",
+    "completed_other": "Revisão concluída: {count} tarefas enviadas ao quadro",
+    "cascaded": "Cliente e lado atualizados também nas tarefas pendentes",
+    "checked_one": "1 item novo",
+    "checked_other": "{count} itens novos"
+  }
+}

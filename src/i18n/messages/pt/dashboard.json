@@ -1,0 +1,65 @@
+{
+  "greeting": {
+    "morning": "Bom dia, {name}",
+    "afternoon": "Boa tarde, {name}",
+    "evening": "Boa noite, {name}"
+  },
+  "weekSoFar": "{hours} registradas nesta semana",
+  "stats": {
+    "toReview": "para revisar",
+    "dueToday": "vencem hoje",
+    "overdue": "atrasadas",
+    "inProgress": "em andamento",
+    "loggedToday": "registradas hoje"
+  },
+  "insights": {
+    "title": "O que precisa de você agora",
+    "jobs_late_one": "Um job agendado está atrasado: {names}",
+    "jobs_late_other": "{count} jobs agendados estão atrasados: {names}",
+    "overdue_one": "1 tarefa está atrasada",
+    "overdue_other": "{count} tarefas estão atrasadas",
+    "review": "{meetings} reuniões e {emails} e-mails aguardando, com {tasks} tarefas candidatas",
+    "due_today_one": "1 tarefa vence hoje",
+    "due_today_other": "{count} tarefas vencem hoje",
+    "critical_alerts_one": "1 alerta crítico aberto",
+    "critical_alerts_other": "{count} alertas críticos abertos",
+    "no_client_one": "1 tarefa aberta sem cliente",
+    "no_client_other": "{count} tarefas abertas sem cliente",
+    "process_week": "A semana ainda não foi processada ({hours} h registradas)",
+    "sync_week": "A timeline desta semana não foi sincronizada com o calendário",
+    "all_clear": "Nada urgente. Bom momento para trabalho focado.",
+    "action": {
+      "jobs_late": "Ver jobs",
+      "overdue": "Abrir",
+      "review": "Revisar",
+      "due_today": "Abrir",
+      "critical_alerts": "Ver alertas",
+      "no_client": "Corrigir",
+      "process_week": "Processar",
+      "sync_week": "Sincronizar",
+      "all_clear": "Abrir quadro"
+    }
+  },
+  "alerts": {
+    "title": "Alertas"
+  },
+  "open": "Abrir",
+  "board": {
+    "title": "Quadro",
+    "more": "mais {count}"
+  },
+  "goals": {
+    "title": "Metas de hoje",
+    "today": "hoje",
+    "none": "Nada agendado para hoje."
+  },
+  "timeline": {
+    "title": "Hoje",
+    "nextBookings": "Próximos agendamentos"
+  },
+  "review": {
+    "title": "Fila de aprovação",
+    "tasks": "tarefas candidatas de {meetings} reuniões e {emails} e-mails",
+    "cta": "Começar a revisar"
+  }
+}
