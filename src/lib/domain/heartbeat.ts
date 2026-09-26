@@ -1,18 +1,11 @@
 /**
  * Heartbeats and the dead-man switch.
  *
- * Every scheduled job records when it last succeeded. A job is LATE when that
- * is older than its interval plus a grace margin. The margin is never below
- * half an interval: a job that runs every minute and is judged on a
- * five-second margin produces false "cron stopped" alerts every time the
- * machine is busy, and an alert that cries wolf gets muted.
- *
- * The switch has a blind spot by construction: if the job that checks the
- * others dies, nobody notices. So the checker is itself watched by a
- * different job (each job names its watcher), and the web app evaluates the
- * same function on every health read, with no dependency on the worker being
- * alive. Two watchers that watch each other plus an independent observer
- * leave no single process whose death goes unreported.
+ * A job is LATE when its last success is older than its interval plus a grace
+ * margin, never below half an interval so a busy machine does not raise false
+ * alerts. Each job names a watcher (the checker is watched too), and the web
+ * app evaluates the same function on every health read, so no single
+ * process can die unreported.
  */
 
 export interface JobHeartbeat {

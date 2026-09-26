@@ -4,10 +4,8 @@
  *   npm run db:seed               wipe the app tables and seed
  *   npm run db:seed -- --if-empty seed only if no seed has completed yet
  *
- * Dates are relative to today, so the demo always shows "this week". The
- * seed goes through the same services the app uses (intake, summarizer,
- * approvals, timeline sync, alert engine), so what you see is what those code
- * paths produce, not hand-written rows pretending to be their output.
+ * Dates are relative to today, so the demo always shows "this week". Data goes
+ * through the app's own services, so screens show what those code paths produce.
  */
 import { loadEnv } from './env';
 
@@ -68,7 +66,6 @@ async function main() {
   }
   await db.query(`TRUNCATE ${APP_TABLES.join(', ')} RESTART IDENTITY CASCADE`);
 
-  // People and settings.
   const password = process.env.DEMO_PASSWORD || 'workspace-demo';
   const users: Record<string, string> = {};
   for (const [key, role] of [['maya', 'owner'], ['theo', 'admin']] as const) {
@@ -121,7 +118,6 @@ async function main() {
     if (system) await db.query('UPDATE alert_rules SET system = true WHERE id = $1', [id]);
   }
 
-  // The mock mailbox: emails (and Maya's replies), meeting notes, notes.
   const mail: { folder: string; id: string; thread: string | null; from: { name: string; email: string }; to: string[]; subject: string; body: string; at: Date }[] = [];
   for (const e of EMAILS) {
     mail.push({ folder: 'INBOX', id: `${e.thread}-1@mail.example.com`, thread: e.thread, from: e.from, to: e.to, subject: e.subject, body: e.body, at: at(e.day, hh(e.hour)) });
@@ -170,7 +166,6 @@ async function main() {
     }
   }
 
-  // Review decisions, as they would have happened over the month.
   const plans = new Map<string, { decisions?: ('a' | 'n')[]; done?: boolean; day: number }>();
   for (const m of MEETINGS) plans.set(m.title, { ...m.plan, day: m.day });
   for (const e of EMAILS) plans.set(e.subject, { ...e.plan, day: e.day });
@@ -194,7 +189,6 @@ async function main() {
     }
   }
 
-  // Board: spread the approved tasks across the columns, plus manual ones.
   const byTitle = async (title: string) =>
     (await db.query<{ id: string }>('SELECT id FROM tasks WHERE title ILIKE $1 LIMIT 1', [`${title}%`])).rows[0]?.id;
   const place: [string, 'todo' | 'doing' | 'review' | 'done', number | null, 'low' | 'normal' | 'high', number | null][] = [
@@ -247,7 +241,6 @@ async function main() {
     void t;
   }
 
-  // API tokens: Theo's helper creates and moves tasks; a read-only report script.
   const theoToken = await createToken(db, { name: 'Theo: board helper', role: 'contributor' }, maya);
   await createToken(db, { name: 'Weekly report script', role: 'viewer' }, maya);
   const old = await createToken(db, { name: 'Old laptop', role: 'manager' }, maya);
@@ -260,7 +253,6 @@ async function main() {
   }
   await db.query("UPDATE api_tokens SET last_used_at = now() - interval '3 hours' WHERE id = $1", [theoToken.id]);
 
-  // Calendars, services and availability.
   const { rows: cals } = await db.query<{ id: string; side: string }>(
     `INSERT INTO calendar_accounts (label, provider, external_id, side, is_timeline_target) VALUES
        ('Lumen Advisory calendar', 'mock', 'maya-own', 'direct', false),
@@ -284,7 +276,6 @@ async function main() {
     [ownCal, partnerCal],
   );
   const svcId = (slug: string) => svc.find((s) => s.slug === slug)!.id;
-  // Busy time already on the calendars (partner meetings, personal blocks).
   const busy: [string, number, string, number, string][] = [
     ['maya-harborvale', 1, '10:00', 60, 'Kestrel steering group'],
     ['maya-harborvale', 2, '14:00', 90, 'Brightwater pilot review'],
@@ -374,7 +365,6 @@ async function main() {
   }
   await createEntry(db, { title: 'Brightwater stand-up', startsAt: at(0, '08:00').toISOString(), durationMin: 15, clientId: clientIds.brightwater }, maya);
 
-  // Goals: three objectives, recurring key results.
   const start = addDays(today, -21);
   const o1 = await createGoal(db, { title: 'Grow the own practice to 40% of billed hours', side: 'direct', startsOn: start, dueOn: addDays(today, 70) });
   await createGoal(db, { parentId: o1, title: 'Send a client update every Friday', side: 'direct', rrule: 'FREQ=WEEKLY;BYDAY=FR', startsOn: start });
@@ -400,7 +390,6 @@ async function main() {
     if (i === 1) await db.query("UPDATE goal_occurrences SET status = 'doing' WHERE id = $1", [o.id]);
   }
 
-  // Manual notes with rich content.
   const personal = await createFolder(db, 'Practice', null);
   const n1 = await createNote(db, { folderId: personal, title: 'Pricing principles' });
   await updateNote(db, n1, {
@@ -448,12 +437,10 @@ async function main() {
     [cronRule[0]!.id, `${cronRule[0]!.id}:job:notes-sync`],
   );
 
-  // Integrations for Maya (encrypted refresh tokens).
   await connect(maya, 'google-calendar', 'Own practice');
   await connect(maya, 'google-calendar', 'Partner firm');
   await connect(maya, 'mail', 'Inbox');
 
-  // Alerts derived from the state above, delivered to the outbox.
   await evaluateScheduled(db, now);
   await deliverOutbox(db);
   const { rows: live } = await db.query<{ id: string; title: string }>("SELECT id, title FROM alerts WHERE status = 'open' ORDER BY created_at");

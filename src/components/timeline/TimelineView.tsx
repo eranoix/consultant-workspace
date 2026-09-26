@@ -18,7 +18,7 @@ import { layoutLanes, type Entry, type WeekData, type WeekReport } from './types
 const DAY_START = 7 * 60;
 const DAY_END = 20 * 60;
 const PX_PER_MIN = 0.8; // 48px per hour
-const MIN_BLOCK_PX = 25; // short blocks stay readable
+const MIN_BLOCK_PX = 25;
 const SNAP = 15;
 
 interface BacklogPrefs {

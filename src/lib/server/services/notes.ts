@@ -3,9 +3,8 @@
  * folder ("Notes" and its subfolders), because that is where notes written
  * on a phone's mail app end up.
  *
- * The sync never deletes. A note that disappears upstream is flagged, not
- * removed: losing a note because a mailbox was reorganised is the one outcome
- * a notes feature cannot have.
+ * The sync never deletes: a note that disappears upstream is flagged, not
+ * removed, so reorganising a mailbox cannot lose a note.
  */
 import type { PoolClient } from 'pg';
 import type { Db } from '../db';

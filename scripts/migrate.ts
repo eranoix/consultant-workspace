@@ -5,15 +5,11 @@
  *   npm run db:migrate -- --reset drop everything first (refused in production)
  *
  * Each file in db/migrations runs once, in its own transaction, in file-name
- * order, and its checksum is recorded. A file that changed after it was
- * applied is an error rather than a silent skip: the database would otherwise
- * disagree with the repository without anyone noticing. The SQL itself is
- * also written to be re-runnable, so a failed half-way file can be retried.
+ * order, with its checksum recorded; a file changed after it was applied is an
+ * error, not a silent skip.
  *
- * It also creates the application's own database role (the user named in
- * DATABASE_URL) when that differs from the admin connection. The web app and
- * the worker then connect as a role that is not a superuser, which is what
- * makes row level security apply to them at all.
+ * It also creates the application role named in DATABASE_URL: the app must
+ * connect as a non-superuser for row level security to apply.
  */
 import { createHash } from 'node:crypto';
 import { readdir, readFile } from 'node:fs/promises';

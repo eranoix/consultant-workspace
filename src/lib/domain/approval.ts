@@ -1,12 +1,9 @@
 /**
  * The approval gate between intake and the board.
  *
- * Nothing a summarizer proposes reaches the board on its own. Every candidate
- * task needs a person to say Approve or No action, and a meeting (or email)
- * can only be marked Done once every one of its tasks has been classified.
- * That rule exists because the opposite default, "approve the meeting and
- * everything in it goes through", is how a hundred half-baked tasks end up on
- * a board nobody trusts any more.
+ * Nothing a summarizer proposes reaches the board on its own: every candidate
+ * needs Approve or No action from a person, and a source can only be marked
+ * Done once all of its tasks are classified.
  */
 
 export type Decision = 'pending' | 'approved' | 'no_action';
@@ -69,11 +66,9 @@ export type UndoAction =
   | { kind: 'refuse'; reason: string };
 
 /**
- * Undoing a decision. A No action, or an Approve that has not reached the
- * board yet, simply goes back to pending. An Approve whose board task is still
- * untouched in the backlog takes the task back with it. Once someone has
- * started working on that task, undo is refused: pulling work out from under
- * a person is worse than a stale candidate.
+ * Undoing a decision. An Approve whose board task is still in the backlog
+ * takes the task back with it; once work on the task has started, undo is
+ * refused rather than pulling work out from under a person.
  */
 export function undoPlan(candidate: CandidateLike, boardStatus: BoardStatus | null): UndoAction {
   if (candidate.decision === 'pending') return { kind: 'refuse', reason: 'Nothing to undo' };
@@ -88,10 +83,7 @@ export function assertCanDecide(status: SourceStatus, next: Decision): void {
   if (status === 'reviewed') throw new ApprovalError('Already reviewed: undo first', 'already_reviewed');
 }
 
-/**
- * Editing a candidate never changes its decision. (An early version treated
- * "saved" as "approved", which silently pushed edited tasks past the gate.)
- */
+/** Editing a candidate never changes its decision, so an edit cannot bypass the gate. */
 export function editableFields<T extends Record<string, unknown>>(patch: T): Omit<T, 'decision'> {
   const { decision: _decision, ...rest } = patch as T & { decision?: unknown };
   return rest;

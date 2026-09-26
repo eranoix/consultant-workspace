@@ -2,10 +2,9 @@
  * Scheduled jobs and their heartbeats. The worker process calls runDue()
  * in a loop; the web app only reads (and can request "run now").
  *
- * Heartbeats are written with an awaited UPDATE before and after each run.
- * A heartbeat sent fire-and-forget can be lost when the process is suspended
- * right after the job returns, and a lost heartbeat looks exactly like a dead
- * job: the switch then pages someone about a cron that is running fine.
+ * Heartbeats are written with an awaited UPDATE before and after each run: a
+ * fire-and-forget one can be lost if the process is suspended, and a lost
+ * heartbeat looks exactly like a dead job.
  */
 import type { Db } from '../db';
 import { isDue, jobHealth, lateJobs, secondsLate, unwatched, effectiveGraceSec, type JobHeartbeat } from '@/lib/domain/heartbeat';

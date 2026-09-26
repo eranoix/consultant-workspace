@@ -1,7 +1,6 @@
 /**
  * The day summary: a handful of numbers, and a short list of things worth
- * doing next, each with the link that does it. An insight without an action
- * is just a statistic.
+ * doing next, each with the link that does it.
  */
 import type { Db } from '../db';
 import { getSettings } from '../settings';

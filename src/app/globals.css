@@ -29,7 +29,6 @@
   }
 }
 
-/* Tiptap editor */
 .ProseMirror {
   @apply min-h-[320px] outline-none;
 }

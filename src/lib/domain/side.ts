@@ -2,10 +2,8 @@
  * Which side of the consultant's work a meeting or email belongs to, and for
  * which client.
  *
- * The consultant subcontracts for a partner firm and also runs her own
- * practice. Getting the side wrong is not cosmetic: partner work is billed
- * through the firm's timesheet, own-client work is invoiced directly, and a
- * task tagged with the wrong side lands in the wrong week report.
+ * Partner work is billed through the partner firm's timesheet and own-client
+ * work is invoiced directly, so a wrong side lands a task in the wrong report.
  *
  * Order of evidence, strongest first:
  *   1. A deterministic override (sender, domain or keyword) set by a person.
