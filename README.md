@@ -1,5 +1,7 @@
 # Consultant Workspace
 
+[![CI](https://github.com/eranoix/consultant-workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/eranoix/consultant-workspace/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) ![node 22.12+](https://img.shields.io/badge/node-22.12%2B-339933?logo=nodedotjs&logoColor=white) ![Next.js 15](https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white) ![PostgreSQL 16](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white) ![docker compose one command](https://img.shields.io/badge/docker%20compose-one%20command-2496ED?logo=docker&logoColor=white)
+
 **One workspace for an independent consultant: bookings, meetings and emails turned into tasks, a task board, a weekly timeline and alerts.**
 
 ![Dashboard](docs/screenshots/01-dashboard.png)
