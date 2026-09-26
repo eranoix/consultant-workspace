@@ -11,7 +11,7 @@ x-app-env: &app-env
   SESSION_SECRET: ${SESSION_SECRET:-docker-compose-demo-secret-change-me-please}
   DEMO_PASSWORD: ${DEMO_PASSWORD:-workspace-demo}
   ENCRYPTION_KEY: ${ENCRYPTION_KEY:-bG9jYWwtZGVtby1rZXktb25seS0zMi1ieXRlcyEhISE=}
-  PUBLIC_URL: ${PUBLIC_URL:-http://localhost:3000}
+  PUBLIC_URL: ${PUBLIC_URL:-http://localhost:${WEB_PORT:-3000}}
   LLM_PROVIDER: ${LLM_PROVIDER:-mock}
   CALENDAR_PROVIDER: ${CALENDAR_PROVIDER:-mock}
   MAIL_PROVIDER: ${MAIL_PROVIDER:-mock}
@@ -28,7 +28,9 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U workspace_admin -d workspace"]
+      # Over TCP: during first start-up Postgres runs a temporary server on the
+      # socket only, and a socket check would let the migrations in too early.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U workspace_admin -d workspace"]
       interval: 3s
       timeout: 3s
       retries: 20
@@ -45,6 +47,8 @@ services:
 
   web:
     image: consultant-workspace:local
+    # Built by the migrate service; never looked for on a registry.
+    pull_policy: never
     environment: *app-env
     ports:
       - "127.0.0.1:${WEB_PORT:-3000}:3000"
@@ -61,6 +65,7 @@ services:
 
   worker:
     image: consultant-workspace:local
+    pull_policy: never
     command: ["node", "dist/worker.mjs"]
     environment: *app-env
     depends_on:

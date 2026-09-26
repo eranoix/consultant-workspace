@@ -12,7 +12,7 @@ const [, , base = 'http://127.0.0.1:3000', out = 'docs/screenshots'] = process.a
 mkdirSync(out, { recursive: true });
 
 const browser = await chromium.launch({ channel: process.env.PW_CHANNEL ?? 'chrome', headless: true });
-const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
 const page = await context.newPage();
 
 const login = await page.request.post(`${base}/api/auth/login`, { data: { email: 'maya@lumen.example.com', password: process.env.DEMO_PASSWORD ?? 'workspace-demo' } });

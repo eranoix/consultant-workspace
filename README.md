@@ -74,7 +74,9 @@ npm run worker                  # in a second terminal: the scheduled jobs
 ```bash
 npm run typecheck && npm run lint
 npm test                        # unit tests (vitest)
-npm run build && npm run test:e2e   # end-to-end (Playwright) against a freshly seeded database
+npx playwright install chromium     # once: the browser the end-to-end tests drive
+npm run db:seed                     # the end-to-end tests expect a freshly seeded database
+npm run build && npm run test:e2e   # end-to-end (Playwright)
 ```
 
 The end-to-end suite covers the three flows that matter most (approving a meeting into the board, working on the board with an API token, planning and syncing a week) plus the public booking page. In CI it runs against an ephemeral Postgres service container on every push.
