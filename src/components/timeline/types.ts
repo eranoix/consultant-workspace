@@ -35,7 +35,6 @@ export interface WeekData {
   };
 }
 
-/** Side-by-side lanes for overlapping blocks in one day. */
 export function layoutLanes<T extends { id: string; start: number; end: number }>(items: T[]): Map<string, { lane: number; lanes: number }> {
   const sorted = [...items].sort((a, b) => a.start - b.start || b.end - a.end);
   const out = new Map<string, { lane: number; lanes: number }>();

@@ -1,13 +1,9 @@
--- 0004 timeline and calendars: the weekly timesheet, the calendars it syncs
--- to, and the mock calendar provider used when no real one is configured.
-
 CREATE TABLE IF NOT EXISTS calendar_accounts (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   label       text NOT NULL,
   provider    text NOT NULL CHECK (provider IN ('mock', 'google')),
   external_id text NOT NULL,
   side        text CHECK (side IN ('partner', 'direct')),
-  -- The calendar the weekly timeline is written to.
   is_timeline_target boolean NOT NULL DEFAULT false,
   created_at  timestamptz NOT NULL DEFAULT now(),
   UNIQUE (provider, external_id)
@@ -15,7 +11,6 @@ CREATE TABLE IF NOT EXISTS calendar_accounts (
 CREATE UNIQUE INDEX IF NOT EXISTS calendar_accounts_one_target
   ON calendar_accounts (is_timeline_target) WHERE is_timeline_target;
 
--- What the mock provider "has on its server".
 CREATE TABLE IF NOT EXISTS mock_calendar_events (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   calendar_id text NOT NULL,
@@ -23,8 +18,6 @@ CREATE TABLE IF NOT EXISTS mock_calendar_events (
   description text,
   starts_at   timestamptz NOT NULL,
   ends_at     timestamptz NOT NULL,
-  -- "busy" (opaque) events count against availability and timesheets;
-  -- "free" (transparent) ones do not.
   busy        boolean NOT NULL DEFAULT true,
   created_at  timestamptz NOT NULL DEFAULT now(),
   updated_at  timestamptz NOT NULL DEFAULT now(),
@@ -56,9 +49,6 @@ CREATE TABLE IF NOT EXISTS timeline_weeks (
   sync_result  jsonb
 );
 
--- Sync state, provider-agnostic: which remote event mirrors which local row,
--- and the fingerprint it was last written with. A sync that finds the same
--- fingerprint writes nothing, so pressing the button twice is harmless.
 CREATE TABLE IF NOT EXISTS calendar_sync_links (
   account_id        uuid NOT NULL REFERENCES calendar_accounts(id) ON DELETE CASCADE,
   origin            text NOT NULL CHECK (origin IN ('timeline', 'booking')),

@@ -17,7 +17,7 @@ import { layoutLanes, type Entry, type WeekData, type WeekReport } from './types
 
 const DAY_START = 7 * 60;
 const DAY_END = 20 * 60;
-const PX_PER_MIN = 0.8; // 48px per hour
+const PX_PER_MIN = 0.8;
 const MIN_BLOCK_PX = 25;
 const SNAP = 15;
 
@@ -97,7 +97,6 @@ export function TimelineView() {
   const [backlogPrefs, setBacklogPrefs] = usePreference<BacklogPrefs>('timeline.backlog', { status: 'all', side: 'all', sort: 'due_asc' });
   const { data, mutate } = useSWR<WeekData>(`/api/timeline${weekParam ? `?week=${weekParam}` : ''}`, fetcher);
   const { data: taskData, mutate: mutateTasks } = useSWR<{ tasks: Task[] }>('/api/tasks', fetcher);
-  // One timeline for every admin: a block dragged in by someone else appears here.
   useLive(['timeline_entries'], () => void mutate());
   useLive(['tasks'], () => void mutateTasks());
   const [editing, setEditing] = useState<Entry | null>(null);

@@ -1,5 +1,3 @@
-// Every namespace is listed here once. Features own their JSON files;
-// this file only wires them together.
 import en_common from './messages/en/common.json';
 import en_shell from './messages/en/shell.json';
 import en_dashboard from './messages/en/dashboard.json';

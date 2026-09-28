@@ -28,7 +28,6 @@ describe('heartbeats', () => {
   });
 
   it('does not call a busy minute a dead job', () => {
-    // A run that took 20 s longer than usual is not an outage.
     expect(jobHealth(job({ lastSuccessAt: ago(80) }), now)).toBe('ok');
   });
 

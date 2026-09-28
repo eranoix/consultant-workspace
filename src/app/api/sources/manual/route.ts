@@ -3,7 +3,6 @@ import { tx } from '@/lib/server/db';
 import { json, parseBody, withUser } from '@/lib/server/http';
 import { ingest } from '@/lib/server/services/intake';
 
-// Paste meeting notes or a transcript by hand; same pipeline as the intake.
 const Body = z.object({
   title: z.string().trim().min(1).max(300),
   body: z.string().trim().min(1).max(50_000),

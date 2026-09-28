@@ -21,12 +21,6 @@ function hub(): Hub {
   return globalHub.__cwHub;
 }
 
-/**
- * One LISTEN connection per process, fanned out to every open event stream.
- * Triggers in the database call pg_notify on every change the UI cares about,
- * so a task moved through the token API shows up on an open board without a
- * reload, whichever process made the change.
- */
 async function ensureConnected(): Promise<void> {
   const h = hub();
   if (h.client) return;

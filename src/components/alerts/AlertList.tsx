@@ -45,7 +45,6 @@ export function timeAgo(iso: string, locale: string): string {
   return rtf.format(-Math.round(diff / 86400), 'day');
 }
 
-/** Live alerts with quick actions; used on the Alerts page and the dashboard widget. */
 export function AlertList({ status = 'live', compact, limit }: { status?: 'live' | 'resolved'; compact?: boolean; limit?: number }) {
   const t = useT();
   const locale = useLocale();

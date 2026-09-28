@@ -1,11 +1,3 @@
-/**
- * Alert delivery. Every alert is written to the outbox first; delivery is a
- * separate step that can be retried. Email and WhatsApp go through webhooks
- * (any relay that accepts a JSON POST) when configured; when they are not, or
- * when they fail three times, the message stays readable in the in-app
- * outbox, which is the channel that cannot fail.
- */
-
 export type Channel = 'outbox' | 'email' | 'whatsapp';
 
 export interface OutgoingMessage {

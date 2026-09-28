@@ -1,7 +1,5 @@
 import { expect, test } from '@playwright/test';
 
-// The public booking page: no sign-in, a free slot, a confirmation with a
-// link that can cancel it.
 test('a visitor books a discovery call and can cancel it', async ({ page }) => {
   await page.goto('/book');
   await page.getByTestId('service').filter({ hasText: 'Discovery call' }).click();

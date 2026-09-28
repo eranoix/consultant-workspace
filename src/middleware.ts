@@ -1,13 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { SESSION_COOKIE, verifySession } from '@/lib/session';
 
-/**
- * Coarse gate: pages under /app and the internal /api need a valid session
- * cookie. Route handlers still resolve the user themselves (a deleted user
- * keeps a valid cookie until it expires); this only keeps anonymous traffic
- * away from them. The token API (/api/v1), the public booking API, sign-in
- * and the health check authenticate on their own terms.
- */
 const PUBLIC_API = [/^\/api\/v1\//, /^\/api\/public\//, /^\/api\/auth\//, /^\/api\/health$/];
 
 export async function middleware(req: NextRequest) {

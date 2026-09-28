@@ -1,10 +1,5 @@
 import { Pool, type PoolClient, type QueryResultRow } from 'pg';
 
-/**
- * One pool per process. Next's dev server re-evaluates modules on every edit,
- * so the pool lives on globalThis: otherwise each hot reload would open a new
- * pool and the old one would keep its connections until Postgres ran out.
- */
 const globalForDb = globalThis as unknown as { __cwPool?: Pool };
 
 export function pool(): Pool {
@@ -34,7 +29,6 @@ export async function queryOne<T extends QueryResultRow = QueryResultRow>(
   return rows[0] ?? null;
 }
 
-/** Run `fn` in one transaction; any throw rolls the whole thing back. */
 export async function tx<T>(fn: (db: PoolClient) => Promise<T>): Promise<T> {
   const client = await pool().connect();
   try {
@@ -50,12 +44,6 @@ export async function tx<T>(fn: (db: PoolClient) => Promise<T>): Promise<T> {
   }
 }
 
-/**
- * A transaction that row level security sees as `userId`. Only the tables
- * with per-person rows (preferences, integration credentials) have policies;
- * `set_config(..., true)` scopes the setting to this transaction, so a pooled
- * connection can never carry one person's identity into the next request.
- */
 export async function asUser<T>(userId: string, fn: (db: PoolClient) => Promise<T>): Promise<T> {
   return tx(async (db) => {
     await db.query("SELECT set_config('app.user_id', $1, true)", [userId]);

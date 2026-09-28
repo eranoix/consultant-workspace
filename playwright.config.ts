@@ -1,9 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// Against a running app when E2E_BASE_URL is set (docker compose), otherwise
-// it starts the production build itself. Either way the database must be
-// freshly seeded: the flows change data (they approve a meeting, create a
-// token, book a slot).
 const external = process.env.E2E_BASE_URL;
 const port = Number(process.env.E2E_PORT ?? 5512);
 
@@ -21,7 +17,6 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     viewport: { width: 1440, height: 900 },
   },
-  // PW_CHANNEL=chrome uses the system Chrome instead of a downloaded browser.
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 }, channel: process.env.PW_CHANNEL || undefined } }],
   webServer: external
     ? undefined

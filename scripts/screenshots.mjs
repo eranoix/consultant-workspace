@@ -1,10 +1,3 @@
-// Captures the README screenshots from a running, freshly seeded instance.
-//
-//   node scripts/screenshots.mjs http://127.0.0.1:3000 docs/screenshots
-//
-// Uses the Playwright library with the system Chrome (channel "chrome"), so
-// nothing extra is downloaded. Each capture waits for a selector that only
-// exists once the data has loaded, never for a fixed time.
 import { mkdirSync } from 'node:fs';
 import { chromium } from '@playwright/test';
 
@@ -41,7 +34,6 @@ for (const s of shots) {
     await page.locator(s.click).first().click();
     await page.waitForSelector(s.after, { timeout: 30_000 });
   }
-  // Park the pointer away from the rail, which expands on hover.
   await page.mouse.move(1439, 520);
   await page.waitForTimeout(600);
   await page.screenshot({ path: `${out}/${s.name}.png` });

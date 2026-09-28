@@ -4,10 +4,6 @@ import { subscribe } from '@/lib/server/realtime';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-/**
- * Server-sent events: `data: {"table":"tasks","op":"UPDATE","id":"..."}`.
- * A comment line every 25 s keeps proxies from closing an idle stream.
- */
 export async function GET(req: Request): Promise<Response> {
   const user = await currentUser();
   if (!user) return new Response('Sign in required', { status: 401 });

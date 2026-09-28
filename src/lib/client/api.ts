@@ -30,5 +30,4 @@ export async function api<T = unknown>(
   return data as T;
 }
 
-/** SWR fetcher. */
 export const fetcher = <T,>(url: string) => api<T>(url);

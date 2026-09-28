@@ -1,6 +1,3 @@
-// Bundles the command-line entry points (migrate, seed, worker) into single
-// files under dist/, so the production image runs them with plain `node`
-// and no TypeScript toolchain.
 import { build } from 'esbuild';
 
 await build({

@@ -1,10 +1,6 @@
--- 0003 board: the kanban tasks and the tokens other people and tools use to
--- work on them over HTTP.
-
 CREATE TABLE IF NOT EXISTS api_tokens (
   id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name         text NOT NULL,
-  -- Shown in lists and logs; the secret part is only ever stored hashed.
   prefix       text NOT NULL UNIQUE,
   token_hash   text NOT NULL,
   role         text NOT NULL CHECK (role IN ('viewer', 'contributor', 'manager', 'custom')),
@@ -47,8 +43,6 @@ BEGIN
   END IF;
 END $$;
 
--- completed_at follows status, in the database, so the API, the board and
--- the approval flow cannot disagree about when something was finished.
 CREATE OR REPLACE FUNCTION tasks_completed_at() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN

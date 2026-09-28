@@ -1,10 +1,3 @@
-/**
- * Alerts: rules are evaluated against events. Some events are pushed as they
- * happen (an email arrives, a booking is made); others are derived on a
- * schedule (a thread nobody answered, a task that went overdue, a job that
- * stopped). Both paths end in the same place: one live alert per condition,
- * one outbox message per channel.
- */
 import type { Db } from '../db';
 import { HttpError } from '../errors';
 import { dedupeKey, inCooldown, matchRule, renderTemplate, type Condition, type Payload } from '@/lib/domain/rules';
@@ -43,7 +36,6 @@ export async function listRules(db: Db): Promise<RuleRow[]> {
   return rows;
 }
 
-/** Raise (or keep) an alert for every rule that matches this event. */
 export async function emit(db: Db, event: string, payload: Payload, entity: Entity | null, now = new Date()): Promise<number> {
   const rules = (await db.query<RuleRow>('SELECT * FROM alert_rules WHERE enabled AND event = $1', [event])).rows;
   let raised = 0;
@@ -77,7 +69,6 @@ export async function emit(db: Db, event: string, payload: Payload, entity: Enti
   return raised;
 }
 
-/** Close alerts whose condition no longer holds (the task got done, the job came back). */
 async function resolveGone(db: Db, ruleIds: string[], liveKeys: Set<string>) {
   if (!ruleIds.length) return 0;
   const { rows } = await db.query<{ id: string; dedupe_key: string }>(
@@ -89,10 +80,6 @@ async function resolveGone(db: Db, ruleIds: string[], liveKeys: Set<string>) {
   return gone.length;
 }
 
-/**
- * The scheduled half of the engine: derive the events that are about the
- * passage of time and evaluate them. Returns what it found for the job log.
- */
 export async function evaluateScheduled(db: Db, now = new Date()) {
   const settings = await getSettings(db);
   const today = dateInZone(now.getTime(), settings.profile.timeZone);
@@ -110,7 +97,6 @@ export async function evaluateScheduled(db: Db, now = new Date()) {
     else derived.push({ event: 'task.due_today', payload: base, entity: { type: 'task', id: t.id, label: t.title } });
   }
 
-  // Threads whose latest message is inbound: somebody is waiting for a reply.
   const unanswered = await db.query<{ id: string; thread_id: string; title: string; from_email: string; client: string | null; side: string | null; hours: number }>(
     `SELECT DISTINCT ON (s.thread_id) s.id, s.thread_id, s.title, s.from_email, c.name AS client, s.side,
             floor(extract(epoch FROM ($1::timestamptz - s.occurred_at)) / 3600)::int AS hours, s.direction
@@ -128,7 +114,6 @@ export async function evaluateScheduled(db: Db, now = new Date()) {
     });
   }
 
-  // Intake that has not succeeded for a while, per channel.
   const intake = await db.query<{ channel: string; hours: number | null }>(
     `SELECT ch AS channel,
             floor(extract(epoch FROM ($1::timestamptz - (SELECT max(finished_at) FROM intake_runs r WHERE r.channel = ch AND r.error IS NULL))) / 3600)::int AS hours
@@ -154,7 +139,6 @@ export async function evaluateScheduled(db: Db, now = new Date()) {
   return { derived: derived.length, raised, resolved };
 }
 
-/** cron.late alerts, raised by whichever job is watching the late one. */
 export async function raiseCronLate(db: Db, late: { name: string; minutesLate: number; watchedBy: string | null }[], watcher: string) {
   const rules = (await db.query<RuleRow>("SELECT * FROM alert_rules WHERE enabled AND event = 'cron.late'")).rows;
   const live = new Set<string>();
@@ -164,7 +148,6 @@ export async function raiseCronLate(db: Db, late: { name: string; minutesLate: n
     for (const r of rules) if (matchRule(r, 'cron.late', payload)) live.add(dedupeKey(r.id, `job:${j.name}`));
     raised += await emit(db, 'cron.late', payload, { type: 'job', id: j.name, label: `${j.name} is ${j.minutesLate} min late` });
   }
-  // Only resolve alerts for jobs this watcher is responsible for.
   const { rows } = await db.query<{ id: string; entity_id: string; dedupe_key: string }>(
     `SELECT a.id, a.entity_id, a.dedupe_key FROM alerts a JOIN cron_jobs j ON j.name = a.entity_id
       WHERE a.entity_type = 'job' AND a.status <> 'resolved' AND j.watched_by = $1`,
@@ -191,7 +174,6 @@ export async function deliverOutbox(db: Db, limit = 50) {
       await db.query("UPDATE notification_outbox SET status = 'sent', sent_at = now(), attempts = attempts + 1, delivered_via = $2, last_error = NULL WHERE id = $1", [m.id, res.via]);
     } else {
       failed += 1;
-      // After the third failure the message stays in the in-app outbox.
       await db.query(
         `UPDATE notification_outbox SET attempts = attempts + 1, last_error = $2,
                 status = CASE WHEN attempts + 1 >= 3 THEN 'sent' ELSE 'failed' END,
@@ -265,7 +247,6 @@ export async function saveRule(db: Db, id: string | null, input: Partial<RuleInp
   }
   const current = (await db.query<RuleRow>('SELECT * FROM alert_rules WHERE id = $1', [id])).rows[0];
   if (!current) throw new HttpError(404, 'Rule not found');
-  // System rules keep their event: they guard the machinery itself.
   if (current.system && input.event && input.event !== current.event) throw new HttpError(400, 'The event of a system rule cannot change');
   await db.query(
     `UPDATE alert_rules SET name = $2, description = $3, enabled = $4, event = $5, match = $6, conditions = $7,

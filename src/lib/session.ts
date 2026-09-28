@@ -1,11 +1,3 @@
-/**
- * Signed session cookie, verifiable in the edge middleware and in Node alike.
- *
- * Web Crypto only (no node:crypto), because the middleware runs on the edge
- * runtime. The cookie is `base64url(payload).base64url(hmac)`, HttpOnly and
- * SameSite=Lax; nothing in it is secret, it only has to be unforgeable.
- */
-
 export const SESSION_COOKIE = 'cw_session';
 export const SESSION_TTL_SEC = 60 * 60 * 12;
 
@@ -64,7 +56,6 @@ export async function verifySession(
   if (!body || !sig) return null;
   let ok = false;
   try {
-    // verify() compares in constant time.
     ok = await crypto.subtle.verify('HMAC', await key(secret), fromB64url(sig) as BufferSource, enc.encode(body));
   } catch {
     return null;

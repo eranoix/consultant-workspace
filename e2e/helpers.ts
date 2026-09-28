@@ -7,11 +7,6 @@ export async function signIn(page: Page) {
   expect(res.ok()).toBeTruthy();
 }
 
-/**
- * HTML5 drag and drop, dispatched in the page with a real DataTransfer, at a
- * given offset inside the target. More reliable across browsers than
- * emulating the mouse, and it exercises the same handlers.
- */
 export async function dragAndDrop(page: Page, source: string, target: string, offsetY = 120) {
   await page.evaluate(
     ({ source, target, offsetY }) => {

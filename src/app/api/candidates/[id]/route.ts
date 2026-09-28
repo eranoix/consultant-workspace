@@ -11,8 +11,6 @@ const Patch = z.object({
   dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
 });
 
-// Editing never approves: the body has no decision field, and the service
-// ignores one if it were sent.
 export const PATCH = withUser<{ id: string }>(async (req, { params }) => {
   const body = await parseBody(req, Patch);
   await tx((db) => editCandidate(db, params.id, body));

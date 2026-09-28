@@ -14,7 +14,6 @@ export async function POST(req: Request) {
       'SELECT id, name, email, password_hash, locale FROM users WHERE lower(email) = lower($1)',
       [email],
     );
-    // Same answer and similar work for an unknown email and a wrong password.
     const ok = user ? await verifyPassword(password, user.password_hash) : await verifyPassword(password, 'scrypt$AAAAAAAAAAAAAAAAAAAAAA==$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=');
     if (!user || !ok) throw new HttpError(401, 'Wrong email or password');
     await startSession(user);

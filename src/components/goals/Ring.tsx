@@ -1,7 +1,3 @@
-/**
- * A progress ring with a soft elliptical backdrop behind the label, so the
- * percentage stays legible over the arc at small sizes.
- */
 export function Ring({ value, size = 96, stroke = 8, label, sublabel }: { value: number; size?: number; stroke?: number; label: string; sublabel?: string }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;

@@ -1,9 +1,3 @@
-/**
- * The invented month. Everyone and everything here is fictional: the
- * consultant, her practice, the partner firm, the clients and their people.
- * Domains are example.com subdomains.
- */
-
 export const PEOPLE = {
   maya: { name: 'Maya Okafor', email: 'maya@lumen.example.com' },
   theo: { name: 'Theo Brandt', email: 'theo@lumen.example.com' },
@@ -57,14 +51,12 @@ export const CLIENTS = [
 ] as const;
 
 export type Plan = {
-  /** approve / no action per task, in order; missing = leave pending. */
   decisions?: ('a' | 'n')[];
-  /** complete the review ("Done") after deciding. */
   done?: boolean;
 };
 
 export interface MeetingSeed {
-  day: number; // offset from today (negative = past)
+  day: number;
   hour: number;
   title: string;
   to: string[];
@@ -81,7 +73,6 @@ export interface EmailSeed {
   subject: string;
   body: string;
   plan: Plan;
-  /** Maya's reply, hours later (goes to the Sent folder). */
   reply?: { afterHours: number; body: string };
 }
 
@@ -508,7 +499,6 @@ export interface NoteSeed {
   body: string;
 }
 
-/** Notes that arrive through the mail folder sync (note the mixed separators). */
 export const MAIL_NOTES: NoteSeed[] = [
   {
     folder: 'Notes',

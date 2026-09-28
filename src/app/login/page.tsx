@@ -11,7 +11,6 @@ export const dynamic = 'force-dynamic';
 export default async function LoginPage() {
   if (await currentUser().catch(() => null)) redirect('/app');
   const { t } = await getT();
-  // The demo password is shown only when it is the documented default.
   const demo = (process.env.DEMO_PASSWORD ?? 'workspace-demo') === 'workspace-demo' ? 'workspace-demo' : null;
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-brand-50 to-ink-50 px-4">

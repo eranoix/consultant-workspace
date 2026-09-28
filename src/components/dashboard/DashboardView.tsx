@@ -182,7 +182,6 @@ function TodayTimeline({ d }: { d: DashboardData }) {
             <div
               key={e.id}
               className={cx('absolute inset-x-1 overflow-hidden rounded border-l-[3px] px-1.5 text-[11px] leading-tight', e.side === 'partner' ? 'border-sky-500 bg-sky-50' : e.side === 'direct' ? 'border-amber-500 bg-amber-50' : 'border-ink-400 bg-ink-100')}
-              // Short blocks keep a 25px minimum so a 15 minute call is still readable.
               style={{ top: (Math.max(s, START) - START) * PX, height: Math.max(25, e.duration_min * PX - 2) }}
               title={e.title}
             >

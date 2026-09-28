@@ -1,10 +1,3 @@
-/**
- * RRULE strings for goals, on top of the vendored recurrence engine.
- *
- * Goals only care about dates, so every occurrence is computed at noon UTC
- * and turned back into "YYYY-MM-DD". Noon keeps the date stable whatever zone
- * later formats it.
- */
 import { expand, describe as describeRule, type RecurrenceRule, InvalidRule } from '@/lib/engine/recurrence';
 
 const DAYS = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
@@ -67,11 +60,6 @@ export function noonUtcToIso(ts: number): string {
   return new Date(ts).toISOString().slice(0, 10);
 }
 
-/**
- * Occurrence dates of a goal between `from` and `to` (inclusive ISO dates).
- * A goal without a rule has exactly one occurrence: its due date, or its
- * start date when it has none.
- */
 export function occurrenceDates(
   goal: { rrule: string | null; startsOn: string; dueOn?: string | null },
   from: string,
@@ -83,9 +71,6 @@ export function occurrenceDates(
   }
   const rule = parseRRule(goal.rrule);
   if (goal.dueOn && rule.until == null && rule.count == null) rule.until = isoToNoonUtc(goal.dueOn) + 12 * 3600_000 - 1000;
-  // Expand from the start, not from the window: COUNT is counted from the
-  // first occurrence, so skipping the ones before the window would let a
-  // "12 times" rule run forever.
   return expand({ rule, start: isoToNoonUtc(goal.startsOn), timeZone: 'UTC', to: isoToNoonUtc(to), limit: 2000 })
     .map(noonUtcToIso)
     .filter((d) => d >= from);

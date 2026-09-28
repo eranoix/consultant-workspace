@@ -1,9 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { signIn } from './helpers';
 
-// Critical flow 1: a meeting's candidate tasks are classified one by one,
-// the review cannot finish until all are classified, and only the approved
-// ones land on the board, with the meeting's client filled in.
 test('approving a meeting sends only approved tasks to the board', async ({ page }) => {
   await signIn(page);
   await page.goto('/app/approvals');
@@ -19,11 +16,9 @@ test('approving a meeting sends only approved tasks to the board', async ({ page
   await tasks.nth(1).getByRole('button', { name: 'No action' }).click();
   await expect(tasks.nth(1)).toHaveAttribute('data-decision', 'no_action');
 
-  // One task still unclassified: Done stays disabled.
   const done = drawer.getByRole('button', { name: 'Done' });
   await expect(done).toBeDisabled();
 
-  // Undo works, then classify the last one.
   await tasks.nth(1).getByRole('button', { name: 'Undo' }).click();
   await expect(tasks.nth(1)).toHaveAttribute('data-decision', 'pending');
   await tasks.nth(1).getByRole('button', { name: 'No action' }).click();
@@ -41,7 +36,6 @@ test('approving a meeting sends only approved tasks to the board', async ({ page
   await expect(card).toContainText('Brightwater Logistics');
   await expect(backlog.getByTestId('task-card').filter({ hasText: 'Fix the label printer on aisle 2' })).toHaveCount(0);
 
-  // The meeting is now under Reviewed, tagged Approved.
   await page.goto('/app/approvals?tab=reviewed');
   await expect(page.getByTestId('source-card').filter({ hasText: 'Brightwater pilot week 1 check-in' })).toContainText('Approved');
 });

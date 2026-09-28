@@ -1,17 +1,6 @@
-/**
- * Seed an invented month so every screen has something on it.
- *
- *   npm run db:seed               wipe the app tables and seed
- *   npm run db:seed -- --if-empty seed only if no seed has completed yet
- *
- * Dates are relative to today, so the demo always shows "this week". Data goes
- * through the app's own services, so screens show what those code paths produce.
- */
 import { loadEnv } from './env';
 
 loadEnv();
-// The seed writes as the database owner; the app itself connects as the
-// restricted role.
 if (process.env.DATABASE_ADMIN_URL) process.env.DATABASE_URL = process.env.DATABASE_ADMIN_URL;
 
 import { pool, tx } from '../src/lib/server/db';
@@ -35,7 +24,6 @@ const TZ = DEFAULT_SETTINGS.profile.timeZone;
 const now = new Date();
 const today = dateInZone(now.getTime(), TZ);
 const at = (dayOffset: number, hhmm: string) => new Date(zonedTimeToUtc(addDays(today, dayOffset), hhmm, TZ));
-/** Offset in days of the n-th working day from today (n < 0 counts back). */
 const bizDay = (n: number) => {
   let offset = 0;
   let left = Math.abs(n);
@@ -90,8 +78,6 @@ async function main() {
     );
     clientIds[c.key] = rows[0]!.id;
   }
-  // A client who writes from a personal address: a deterministic override
-  // beats anything the content would suggest.
   await db.query("INSERT INTO side_overrides (kind, pattern, side, client_id, note) VALUES ('sender', $1, 'direct', $2, $3)", [
     PEOPLE.samPersonal.email,
     clientIds.northlight,
@@ -102,7 +88,6 @@ async function main() {
     'The Dayton site is always Brightwater',
   ]);
 
-  // Alert rules first, so intake and bookings raise alerts through them.
   const rules: [string, Parameters<typeof saveRule>[2], boolean][] = [
     ['Scheduled job {job} is late', { event: 'cron.late', severity: 'critical', channels: ['outbox', 'whatsapp'], cooldownMin: 30, description: 'Raised by the dead-man switch, or by the job that watches it.' }, true],
     ['Intake stalled: {channel}', { event: 'intake.stalled', severity: 'critical', channels: ['outbox', 'email'], conditions: [{ field: 'hours_since_success', op: 'gt', value: '6' }], description: 'No successful intake run for six hours.' }, true],
@@ -143,8 +128,6 @@ async function main() {
   }
   mail.sort((a, b) => a.at.getTime() - b.at.getTime());
   for (const m of mail) {
-    // modified_at is set to "now" on purpose: the intake must show the
-    // receive date, and this makes a wrong choice obvious on screen.
     await db.query(
       `INSERT INTO mock_mailbox (folder, message_id, thread_id, from_email, from_name, to_emails, subject, body_text, received_at, modified_at)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9, now())`,
@@ -154,7 +137,6 @@ async function main() {
   await runMailIntake(db, 'meeting');
   await runMailIntake(db, 'email');
   await syncNotesFromMail(db);
-  // Spread the intake history over the last day for the health panel.
   await db.query(`UPDATE intake_runs SET started_at = now() - interval '2 minutes', finished_at = now() - interval '2 minutes'`);
   for (let i = 1; i <= 24; i += 1) {
     for (const ch of ['email', 'meeting', 'notes']) {
@@ -221,7 +203,6 @@ async function main() {
     await updateTask(db, id, { dueDate: due === null ? null : addDays(today, due), priority, estimateMin: estimate });
     await moveTask(db, id, status);
   }
-  // Completed tasks finished around their due date, not all "now".
   await db.query("UPDATE tasks SET completed_at = (due_date + time '16:30') AT TIME ZONE $1 WHERE status = 'done' AND due_date IS NOT NULL", [TZ]);
 
   const manual: [string, string, keyof typeof clientIds | null, 'partner' | 'direct' | null, 'backlog' | 'todo' | 'doing' | 'review' | 'done', number | null, 'low' | 'normal' | 'high'][] = [
@@ -307,8 +288,6 @@ async function main() {
     );
   }
 
-  // The timeline: last two weeks complete (processed and synced), this week
-  // filled up to today and partly planned ahead.
   const taskId = async (t: string) => (await byTitle(t)) ?? null;
   type Block = [number, string, number, string, string | null, keyof typeof clientIds | null];
   const weekPattern: Block[] = [
@@ -336,7 +315,6 @@ async function main() {
     const ws = addDays(monday, w);
     for (const [d, time, dur, title, task, client] of weekPattern) {
       const date = addDays(ws, d);
-      // This week: filled up to today, and today only until the current hour.
       if (w === 0 && date > today) continue;
       const startsAt = new Date(zonedTimeToUtc(date, time, TZ));
       if (w === 0 && date === today && startsAt.getTime() > now.getTime() && time > '11:00') continue;
@@ -358,7 +336,6 @@ async function main() {
       await tx((c) => syncWeek(c, ws, TZ));
     }
   }
-  // This week: synced once earlier, then a couple of blocks added since.
   await tx((c) => syncWeek(c, monday, TZ));
   if (today > monday) {
     await createEntry(db, { title: 'Proposal edits for Northlight', startsAt: at(-1, '16:30').toISOString(), durationMin: 30, clientId: clientIds.northlight }, maya);
@@ -377,7 +354,6 @@ async function main() {
   await createGoal(db, { parentId: o3, title: 'Clear the approval queue', rrule: 'FREQ=DAILY', startsOn: addDays(today, -10) });
   await createGoal(db, { parentId: o3, title: 'Process my week', rrule: 'FREQ=WEEKLY;BYDAY=FR', startsOn: start });
   await ensureOccurrences(db, addDays(today, -21), addDays(today, 28));
-  // Past occurrences: mostly done, completed on their day; one skipped.
   await db.query(
     `UPDATE goal_occurrences SET status = 'done', completed_at = (occurs_on + time '17:10') AT TIME ZONE $2
       WHERE occurs_on < $1::date AND (extract(doy FROM occurs_on)::int % 5) <> 0`,
@@ -416,8 +392,6 @@ async function main() {
     contentText: 'Before closing the week: clear the approval queue, process my week, sync the week, send the client update.',
   });
 
-  // Jobs: registered and healthy, with a short history, and one past outage
-  // the dead-man switch caught and that has since recovered.
   await registerJobs(db);
   await db.query(`UPDATE cron_jobs SET last_started_at = now() - interval '40 seconds', last_finished_at = now() - interval '38 seconds',
                          last_success_at = now() - interval '38 seconds', last_duration_ms = 120 + (random() * 900)::int,

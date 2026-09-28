@@ -1,7 +1,3 @@
--- 0008 bookings: the public booking page. Services choose which calendar
--- they book into; the database itself refuses two confirmed bookings that
--- overlap, whatever the application code does.
-
 CREATE TABLE IF NOT EXISTS services (
   id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   slug                text NOT NULL UNIQUE,

@@ -19,7 +19,6 @@ export interface NavItem {
   href: string;
   labelKey: string;
   icon: LucideIcon;
-  /** Also active for these path prefixes. */
   match?: string[];
 }
 

@@ -6,7 +6,6 @@ import { useT } from '@/i18n/client';
 import { Badge, Button, Modal, SideTag } from '../ui';
 import { useClients, useWorkspace } from '../shell/workspace';
 
-/** Which clients and engagements are live right now, and how much is open on each. */
 export function ActiveProjects({ open, onClose, onPick }: { open: boolean; onClose: () => void; onPick: (clientId: string) => void }) {
   const t = useT();
   const { partnerShort } = useWorkspace();

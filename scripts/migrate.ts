@@ -1,16 +1,3 @@
-/**
- * Versioned, idempotent migrations.
- *
- *   npm run db:migrate            apply what is new
- *   npm run db:migrate -- --reset drop everything first (refused in production)
- *
- * Each file in db/migrations runs once, in its own transaction, in file-name
- * order, with its checksum recorded; a file changed after it was applied is an
- * error, not a silent skip.
- *
- * It also creates the application role named in DATABASE_URL: the app must
- * connect as a non-superuser for row level security to apply.
- */
 import { createHash } from 'node:crypto';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -41,7 +28,6 @@ export async function migrate(opts: { reset?: boolean; log?: (s: string) => void
       await client.query('DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public;');
     }
 
-    // Serialise concurrent runners (two containers starting at once).
     await client.query('SELECT pg_advisory_lock(727401)');
 
     await client.query(`CREATE TABLE IF NOT EXISTS schema_migrations (
@@ -99,7 +85,6 @@ async function ensureAppRole(client: Client, adminUrl: string, log: (s: string) 
 
   const exists = await client.query('SELECT 1 FROM pg_roles WHERE rolname = $1', [role]);
   const password = decodeURIComponent(app.password);
-  // Password literals cannot be bound as parameters in DDL; format() quotes it.
   const pw = (await client.query<{ q: string }>('SELECT quote_literal($1) AS q', [password])).rows[0]!.q;
   if (!exists.rowCount) {
     await client.query(`CREATE ROLE ${quoteIdent(role)} LOGIN NOSUPERUSER NOBYPASSRLS PASSWORD ${pw}`);

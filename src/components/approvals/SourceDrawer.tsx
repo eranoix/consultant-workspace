@@ -21,7 +21,6 @@ export function formatWhen(iso: string, locale: string, timeZone?: string) {
   return new Intl.DateTimeFormat(locale === 'pt' ? 'pt-BR' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone }).format(new Date(iso));
 }
 
-/** Where the client and side came from, in words. */
 function Provenance({ reason }: { reason: string | null }) {
   const t = useT();
   if (!reason) return null;

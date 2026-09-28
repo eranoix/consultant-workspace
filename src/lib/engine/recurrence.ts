@@ -1,52 +1,28 @@
-/*
- * Vendored from clinic-booking-app (MIT, same author). Kept as close to
- * upstream as possible so fixes can be copied across; its tests live upstream.
- */
-
-/**
- * Recurrence: a deliberately small subset of RFC 5545 (daily, weekly by
- * weekday, monthly by day of month, count or until, exception dates).
- *
- * Expansion walks the LOCAL calendar, not a fixed millisecond step, so a
- * weekly series keeps its local time across daylight-saving changes. The 31st
- * of a 30-day month is skipped, not clamped, so no occurrence is invented.
- */
-
 import { dateInZone, weekdayInZone, zonedTimeToUtc } from './availability';
 
 export type Frequency = 'daily' | 'weekly' | 'monthly';
 
 export interface RecurrenceRule {
   frequency: Frequency;
-  /** Every N periods. 1 = every one. */
   interval?: number;
-  /** weekly only: 0 = Sunday ... 6 = Saturday. Defaults to the start's weekday. */
   byWeekday?: number[];
-  /** monthly only: 1-31. Defaults to the start's day of month. */
   byMonthDay?: number[];
-  /** Stop after this many occurrences. */
   count?: number;
-  /** Stop at or before this instant. */
   until?: number;
-  /** Dates in "YYYY-MM-DD" to skip, a holiday, a cancelled single session. */
   exceptDates?: string[];
 }
 
 export interface ExpandOptions {
   rule: RecurrenceRule;
-  /** First occurrence, as a UTC instant. */
   start: number;
   timeZone: string;
-  /** Only return occurrences within this window. */
   from?: number;
   to?: number;
-  /** Safety valve against an unbounded rule. */
   limit?: number;
 }
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-/** The local wall-clock time of an instant, as "HH:MM". */
 function timeInZone(ts: number, timeZone: string): string {
   return new Intl.DateTimeFormat('en-GB', {
     timeZone, hour: '2-digit', minute: '2-digit', hour12: false,
@@ -66,28 +42,19 @@ function addMonthsISO(dateISO: string, months: number, day: number): string | nu
   const ny = Math.floor(total / 12);
   const nm = total % 12;
   const daysInMonth = new Date(Date.UTC(ny, nm + 1, 0)).getUTCDate();
-  // Skip, not clamp: moving the 31st to the 28th would invent an occurrence.
   if (day > daysInMonth) return null;
   return `${ny}-${String(nm + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
-/** Thrown when a rule field is outside the range it is defined over. */
 export class InvalidRule extends Error {
   override readonly name = 'InvalidRule';
 }
-
-/**
- * Expand a rule into concrete instants, bounded by `count`, `until` and
- * `limit`, whichever comes first (a rule with none is capped by `limit`).
- */
 
 export function expand(opts: ExpandOptions): number[] {
   const { rule, start, timeZone } = opts;
 
   if (rule.count != null && rule.count <= 0) return [];
 
-  // Reject out-of-range fields: arithmetic would silently turn weekday 9 into
-  // a date in the following week.
   for (const wd of rule.byWeekday ?? []) {
     if (!Number.isInteger(wd) || wd < 0 || wd > 6) {
       throw new InvalidRule(`byWeekday must be 0-6, got ${wd}`);
@@ -129,8 +96,6 @@ export function expand(opts: ExpandOptions): number[] {
       ? [...rule.byWeekday]
       : [weekdayInZone(start, timeZone)]).sort((a, b) => a - b);
 
-    // Walk from the Sunday of the start's week; weekdays before the start are
-    // dropped by the `ts < start` guard.
     const startWeekday = weekdayInZone(start, timeZone);
     let weekAnchor = addDaysISO(startDate, -startWeekday);
 
@@ -150,14 +115,13 @@ export function expand(opts: ExpandOptions): number[] {
   for (let m = 0; m < limit; m += interval) {
     for (const day of days) {
       const dateISO = addMonthsISO(startDate, m, day);
-      if (dateISO === null) continue; // month too short: skipped, not clamped
+      if (dateISO === null) continue;
       if (!push(dateISO)) return out;
     }
   }
   return out;
 }
 
-/** Human-readable description, for confirmation screens and emails. */
 export function describe(rule: RecurrenceRule): string {
   const n = Math.max(1, rule.interval ?? 1);
   const every = n === 1 ? 'Every' : `Every ${n}`;

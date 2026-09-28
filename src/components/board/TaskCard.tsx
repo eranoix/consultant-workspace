@@ -12,12 +12,6 @@ export function formatDay(iso: string, locale: string) {
   return new Intl.DateTimeFormat(locale === 'pt' ? 'pt-BR' : 'en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
-/**
- * One card. Titles stay on one line with an ellipsis (the full title is in
- * the tooltip and the drawer), so a long title cannot push a column's cards
- * out of view. The border carries the deadline: red when overdue, yellow
- * when due today.
- */
 export function TaskCard({
   task,
   today,

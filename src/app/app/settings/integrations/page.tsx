@@ -8,7 +8,6 @@ import { IntegrationsClient } from '@/components/settings/IntegrationsClient';
 export const metadata: Metadata = { title: 'Integrations' };
 export const dynamic = 'force-dynamic';
 
-/** Each provider check is slow and independent; each streams in on its own. */
 async function Probe({ id, name }: { id: string; name: string }) {
   const { t } = await getT();
   const r = await probe(id);

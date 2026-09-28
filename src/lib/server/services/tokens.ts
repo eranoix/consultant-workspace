@@ -28,7 +28,6 @@ export async function listTokens(db: Db): Promise<(TokenRow & { state: string })
   }));
 }
 
-/** Returns the full token exactly once; only its hash is stored. */
 export async function createToken(
   db: Db,
   input: { name: string; role: TokenRole; permissions?: string[]; expiresInDays?: number | null },
@@ -62,7 +61,6 @@ export interface TokenPrincipal {
   permissions: string[];
 }
 
-/** Resolve the Authorization header to an active token, or throw 401/403. */
 export async function authenticate(db: Db, header: string | null, needed: Permission): Promise<TokenPrincipal> {
   const parsed = parseToken(header);
   if (!parsed) throw new HttpError(401, 'Missing or malformed bearer token', 'unauthenticated');

@@ -1,11 +1,3 @@
-/**
- * Notes: nested folders, rich-text notes, and a one-way sync from a mail
- * folder ("Notes" and its subfolders), because that is where notes written
- * on a phone's mail app end up.
- *
- * The sync never deletes: a note that disappears upstream is flagged, not
- * removed, so reorganising a mailbox cannot lose a note.
- */
 import type { PoolClient } from 'pg';
 import type { Db } from '../db';
 import { HttpError } from '../errors';
@@ -106,7 +98,6 @@ export async function createFolder(db: Db, name: string, parentId: string | null
   return rows[0]!.id;
 }
 
-/** True when `candidate` is `folderId` itself or one of its descendants. */
 export async function isDescendant(db: Db, folderId: string, candidate: string): Promise<boolean> {
   const { rows } = await db.query<{ hit: boolean }>(
     `WITH RECURSIVE sub AS (
@@ -118,7 +109,6 @@ export async function isDescendant(db: Db, folderId: string, candidate: string):
   return !!rows[0]?.hit;
 }
 
-/** Rename or move a folder. Moving a folder into its own subtree is refused. */
 export async function updateFolder(db: Db, id: string, patch: { name?: string; parentId?: string | null; position?: number }) {
   if (patch.parentId && (await isDescendant(db, id, patch.parentId))) {
     throw new HttpError(400, 'A folder cannot be moved inside itself');
@@ -141,7 +131,6 @@ export async function updateFolder(db: Db, id: string, patch: { name?: string; p
   await db.query(`UPDATE note_folders SET ${sets.join(', ')} WHERE id = $1`, params);
 }
 
-/** Deleting a folder keeps its notes: they move to the parent (or to no folder). */
 export async function deleteFolder(db: PoolClient, id: string) {
   const { rows } = await db.query<{ parent_id: string | null }>('SELECT parent_id FROM note_folders WHERE id = $1', [id]);
   if (!rows[0]) return;
@@ -154,7 +143,6 @@ export async function deleteFolder(db: PoolClient, id: string) {
   await db.query('DELETE FROM note_folders WHERE id = $1', [id]);
 }
 
-/** Plain text (and a little HTML) into a Tiptap document. */
 export function textToDoc(text: string, html?: string | null) {
   const source = html ? html.replace(/<br\s*\/?>/gi, '\n').replace(/<\/(p|div|li|h\d)>/gi, '\n').replace(/<[^>]+>/g, '') : text;
   const decoded = source.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');

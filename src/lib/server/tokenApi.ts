@@ -5,11 +5,6 @@ import type { Permission } from '@/lib/domain/tokens';
 
 type Ctx<P> = { params: Promise<P> };
 
-/**
- * Wrapper for /api/v1: bearer token in, one permission checked, JSON out.
- * CORS is open on purpose: the token is the credential, not the origin, and
- * scripts and tools call this from anywhere.
- */
 export function withToken<P = Record<string, string>>(
   permission: Permission,
   handler: (req: Request, ctx: { token: TokenPrincipal; params: P }) => Promise<Response>,

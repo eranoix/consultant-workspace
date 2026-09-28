@@ -1,9 +1,3 @@
-/**
- * Goals: objectives with key results, where a key result can recur
- * ("publish a client update every Friday"). Occurrences are materialised
- * rows, so each one can be ticked, moved on the goals kanban, or skipped
- * without touching the rule.
- */
 import type { Db } from '../db';
 import { HttpError } from '../errors';
 import { occurrenceDates, parseRRule } from '@/lib/domain/rrule';
@@ -38,7 +32,6 @@ const GOAL_SQL = `
          to_char(g.starts_on, 'YYYY-MM-DD') AS starts_on, to_char(g.due_on, 'YYYY-MM-DD') AS due_on, g.status, g.position
     FROM goals g LEFT JOIN clients c ON c.id = g.client_id`;
 
-/** Create the missing occurrence rows of every active key result inside the window. */
 export async function ensureOccurrences(db: Db, from: string, to: string): Promise<number> {
   const { rows } = await db.query<GoalRow>(`${GOAL_SQL} WHERE g.status = 'active' AND g.parent_id IS NOT NULL`);
   let created = 0;
@@ -71,7 +64,6 @@ export async function listGoals(db: Db, from: string, to: string) {
       [from, to],
     )
   ).rows;
-  // Progress over the whole life of each key result, not just the window.
   const progress = (
     await db.query<{ goal_id: string; done: number; due: number }>(
       `SELECT goal_id, count(*) FILTER (WHERE status = 'done')::int AS done,
@@ -145,7 +137,6 @@ export async function updateGoal(db: Db, id: string, patch: Partial<GoalInput> &
   if (!sets.length) return;
   const { rowCount } = await db.query(`UPDATE goals SET ${sets.join(', ')} WHERE id = $1`, params);
   if (!rowCount) throw new HttpError(404, 'Goal not found');
-  // A changed rule drops future open occurrences; they are regenerated.
   if (patch.rrule !== undefined || patch.startsOn !== undefined || patch.dueOn !== undefined) {
     await db.query("DELETE FROM goal_occurrences WHERE goal_id = $1 AND occurs_on >= current_date AND status = 'open'", [id]);
   }
@@ -166,7 +157,6 @@ export async function setOccurrence(db: Db, id: string, status: OccurrenceRow['s
   if (!rowCount) throw new HttpError(404, 'Occurrence not found');
 }
 
-/** Today's ring on the dashboard: done / (all of today's that are not skipped). */
 export async function todayRing(db: Db, today: string) {
   await ensureOccurrences(db, today, today);
   const { rows } = await db.query<{ done: number; total: number }>(

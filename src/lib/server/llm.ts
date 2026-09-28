@@ -1,12 +1,3 @@
-/**
- * The summarizer behind the approval hub, behind a provider adapter.
- *
- * `mock` (the default) is deterministic: the same meeting notes always give
- * the same topics, decisions and candidate tasks, so the demo, the seed and
- * the tests agree with each other and nothing depends on a network or a key.
- * `openai-compatible` posts to any chat-completions endpoint and expects the
- * same JSON shape back; whatever it returns is validated before it is used.
- */
 import { z } from 'zod';
 
 export interface SummaryInput {
@@ -42,7 +33,6 @@ function iso(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-/** "by Friday", "by 2026-10-02", "tomorrow", "next week", "end of month". */
 export function extractDue(text: string, from: Date): string | null {
   const t = text.toLowerCase();
   const explicit = /\b(\d{4}-\d{2}-\d{2})\b/.exec(t);
@@ -84,7 +74,6 @@ function shorten(s: string, max: number): string {
   return cut.slice(0, Math.max(cut.lastIndexOf(' '), max - 10)).trimEnd() + '...';
 }
 
-/** Task title: drop owner prefixes ("Maya to ...") and trailing due phrases. */
 function taskTitle(line: string): string {
   let t = clean(line)
     .replace(/^(?:[A-Z][a-z]+(?: and [A-Z][a-z]+)?)\s+(?:to|will)\s+/, '')
@@ -144,14 +133,12 @@ export function mockSummarize(input: SummaryInput): Summary {
 
   let summary: string;
   if (input.kind === 'meeting') {
-    // Meeting notes are already structured: say what was covered and decided.
     const parts: string[] = [];
     if (topics.length) parts.push(`Covered: ${topics.slice(0, 3).join('; ')}.`);
     if (keyDecisions.length) parts.push(`Decided: ${keyDecisions[0]}.`);
     if (tasks.length) parts.push(`${tasks.length} follow-up${tasks.length === 1 ? '' : 's'} proposed.`);
     summary = parts.join(' ');
   } else {
-    // Email prose, minus greetings, sign-offs and one-word lines (a name).
     const prose = lines
       .filter((l) => !/^(hi|hello|dear|thanks|thank you|best|regards|cheers)\b[,!.]?$/i.test(l) && !/^(hi|hello|dear)\b/i.test(l) && l.split(/\s+/).length > 2)
       .join(' ');

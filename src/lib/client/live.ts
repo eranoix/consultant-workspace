@@ -5,11 +5,6 @@ import { useEffect, useRef } from 'react';
 type Change = { table: string; op: string; id: string | null };
 type Handler = (e: Change) => void;
 
-/**
- * One EventSource per tab, shared by every component that wants live
- * updates. Components subscribe by table name; bursts are debounced so a bulk
- * change (approving a meeting that creates five tasks) refetches once.
- */
 const handlers = new Set<{ tables: string[]; fn: Handler }>();
 let source: EventSource | null = null;
 

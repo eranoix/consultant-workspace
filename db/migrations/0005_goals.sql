@@ -1,6 +1,3 @@
--- 0005 goals: two-level OKRs (objective, key result) with recurring key
--- results expanded into dated occurrences.
-
 CREATE TABLE IF NOT EXISTS goals (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   parent_id   uuid REFERENCES goals(id) ON DELETE CASCADE,
@@ -8,7 +5,6 @@ CREATE TABLE IF NOT EXISTS goals (
   description text NOT NULL DEFAULT '',
   side        text CHECK (side IN ('partner', 'direct')),
   client_id   uuid REFERENCES clients(id) ON DELETE SET NULL,
-  -- RFC 5545 subset, e.g. FREQ=WEEKLY;BYDAY=MO,WE;COUNT=12. NULL = one-off.
   rrule       text,
   starts_on   date NOT NULL DEFAULT current_date,
   due_on      date,
@@ -19,7 +15,6 @@ CREATE TABLE IF NOT EXISTS goals (
   CHECK (parent_id IS NULL OR parent_id <> id)
 );
 
--- Two levels exactly: a key result's parent must be an objective.
 CREATE OR REPLACE FUNCTION goals_two_levels() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN

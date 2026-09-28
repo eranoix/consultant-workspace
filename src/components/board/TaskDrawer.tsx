@@ -11,7 +11,6 @@ import { Badge, Button, Drawer, Field, Spinner, useToast } from '../ui';
 import { ClientSidePicker } from './ClientSidePicker';
 import { STATUS_ORDER, type Task } from './types';
 
-/** Close a drawer by dropping its search param, keeping everything else. */
 export function useDrawerParam(name: string) {
   const router = useRouter();
   const pathname = usePathname();

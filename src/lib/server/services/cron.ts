@@ -1,11 +1,3 @@
-/**
- * Scheduled jobs and their heartbeats. The worker process calls runDue()
- * in a loop; the web app only reads (and can request "run now").
- *
- * Heartbeats are written with an awaited UPDATE before and after each run: a
- * fire-and-forget one can be lost if the process is suspended, and a lost
- * heartbeat looks exactly like a dead job.
- */
 import type { Db } from '../db';
 import { isDue, jobHealth, lateJobs, secondsLate, unwatched, effectiveGraceSec, type JobHeartbeat } from '@/lib/domain/heartbeat';
 import { runMailIntake } from './intake';
@@ -127,7 +119,6 @@ export const JOBS: JobDefinition[] = [
   },
 ];
 
-/** Insert missing job rows; never overwrites what a person changed (enabled, intervals). */
 export async function registerJobs(db: Db) {
   for (const j of JOBS) {
     await db.query(
@@ -178,7 +169,6 @@ export async function requestRun(db: Db, name: string) {
   await db.query('UPDATE cron_jobs SET run_requested_at = now() WHERE name = $1', [name]);
 }
 
-/** The health panel. Computed here, in the web process, independent of the worker. */
 export async function jobsHealth(db: Db, now = new Date()) {
   const { rows } = await db.query<JobRow>('SELECT * FROM cron_jobs ORDER BY name');
   const beats = rows.map(toHeartbeat);

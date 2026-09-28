@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { extractDue, mockSummarize } from '@/lib/server/llm';
 
-const occurredAt = new Date('2026-09-22T15:00:00Z'); // a Tuesday
+const occurredAt = new Date('2026-09-22T15:00:00Z');
 
 describe('mock summarizer', () => {
   it('turns meeting notes into topics, decisions and candidate tasks', () => {

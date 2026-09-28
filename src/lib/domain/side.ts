@@ -1,23 +1,3 @@
-/**
- * Which side of the consultant's work a meeting or email belongs to, and for
- * which client.
- *
- * Partner work is billed through the partner firm's timesheet and own-client
- * work is invoiced directly, so a wrong side lands a task in the wrong report.
- *
- * Order of evidence, strongest first:
- *   1. A deterministic override (sender, domain or keyword) set by a person.
- *      Nothing read from content may contradict it.
- *   2. The sender's email domain: a client's domain, or the partner firm's.
- *   3. Participants' domains.
- *   4. A client's name or alias mentioned in the title or body.
- *   5. Nothing matched: own practice, flagged as a guess.
- *
- * The partner firm's domain decides the SIDE but not the client: an email from
- * a partner colleague is partner work, and the client is whichever partner
- * client the content mentions, if any.
- */
-
 export type Side = 'partner' | 'direct';
 
 export interface ClientRef {
@@ -46,16 +26,13 @@ export interface InferInput {
 export interface InferContext {
   clients: ClientRef[];
   overrides: SideOverride[];
-  /** Domains of the partner firm, e.g. ["harborvale.example.com"]. */
   partnerDomains: string[];
-  /** The consultant's own domains; never evidence of anything. */
   ownDomains?: string[];
 }
 
 export interface Inference {
   side: Side;
   clientId: string | null;
-  /** Short machine-readable reason, shown in the UI as provenance. */
   reason: string;
   confidence: 'override' | 'high' | 'medium' | 'low';
 }
@@ -67,7 +44,6 @@ export function domainOf(email: string | null | undefined): string | null {
   return email.slice(at + 1).trim().toLowerCase().replace(/>$/, '') || null;
 }
 
-/** True when `domain` is `base` or one of its subdomains. */
 export function domainMatches(domain: string, base: string): boolean {
   const d = domain.toLowerCase();
   const b = base.toLowerCase();
@@ -78,7 +54,6 @@ function escapeRe(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-/** Whole-word, case-insensitive mention. "Orchard" must not match "orchardist". */
 export function mentions(text: string, term: string): boolean {
   const t = term.trim();
   if (t.length < 2) return false;
@@ -89,7 +64,6 @@ function clientByDomain(domain: string, clients: ClientRef[]): ClientRef | undef
   return clients.find((c) => c.domains.some((d) => domainMatches(domain, d)));
 }
 
-/** The client mentioned most often; ties go to the earliest mention. */
 export function clientByContent(text: string, clients: ClientRef[], side?: Side): ClientRef | undefined {
   let best: { c: ClientRef; score: number; first: number } | undefined;
   for (const c of clients) {
@@ -115,7 +89,6 @@ export function inferSide(input: InferInput, ctx: InferContext): Inference {
   const text = `${input.title}\n${input.body}`;
   const own = ctx.ownDomains ?? [];
 
-  // 1. Overrides: sender beats domain beats keyword.
   const sender = ctx.overrides.find((o) => o.kind === 'sender' && o.pattern.toLowerCase() === from);
   if (sender) return { side: sender.side, clientId: sender.clientId, reason: `override:sender:${sender.pattern}`, confidence: 'override' };
   if (fromDomain) {
@@ -125,7 +98,6 @@ export function inferSide(input: InferInput, ctx: InferContext): Inference {
   const kw = ctx.overrides.find((o) => o.kind === 'keyword' && mentions(text, o.pattern));
   if (kw) return { side: kw.side, clientId: kw.clientId, reason: `override:keyword:${kw.pattern}`, confidence: 'override' };
 
-  // 2. Sender domain.
   if (fromDomain && !own.some((d) => domainMatches(fromDomain, d))) {
     const c = clientByDomain(fromDomain, ctx.clients);
     if (c) return { side: c.side, clientId: c.id, reason: `domain:${fromDomain}`, confidence: 'high' };
@@ -140,7 +112,6 @@ export function inferSide(input: InferInput, ctx: InferContext): Inference {
     }
   }
 
-  // 3. Participants.
   const partDomains = (input.participants ?? [])
     .map(domainOf)
     .filter((d): d is string => !!d && !own.some((o) => domainMatches(d, o)));
@@ -150,7 +121,6 @@ export function inferSide(input: InferInput, ctx: InferContext): Inference {
   }
   const partnerParticipant = partDomains.find((d) => ctx.partnerDomains.some((p) => domainMatches(d, p)));
 
-  // 4. Content.
   const mentioned = clientByContent(text, ctx.clients, partnerParticipant ? 'partner' : undefined);
   if (mentioned) {
     return { side: mentioned.side, clientId: mentioned.id, reason: `content:${mentioned.name}`, confidence: 'medium' };
@@ -159,6 +129,5 @@ export function inferSide(input: InferInput, ctx: InferContext): Inference {
     return { side: 'partner', clientId: null, reason: `participant:${partnerParticipant}`, confidence: 'medium' };
   }
 
-  // 5. Nothing to go on.
   return { side: 'direct', clientId: null, reason: 'default', confidence: 'low' };
 }

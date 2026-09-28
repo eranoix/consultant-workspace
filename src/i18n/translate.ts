@@ -15,13 +15,6 @@ function lookup(tree: Messages, key: string): string | undefined {
   return typeof node === 'string' ? node : undefined;
 }
 
-/**
- * `t('board.columns.todo')`, `t('approvals.pending', { count: 3 })`.
- *
- * Plurals use a `_one` / `_other` pair next to the key and pick by `count`.
- * A missing key falls back to English, then to the key itself: a visible key
- * on screen is easier to spot and fix than a blank.
- */
 export function makeT(locale: Locale, catalog: Record<Locale, Messages> = messages): T {
   return (key, vars) => {
     let template: string | undefined;

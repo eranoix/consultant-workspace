@@ -1,7 +1,3 @@
-/**
- * The weekly timeline: where the consultant's hours actually went. Shared by
- * every admin (one timeline, not one per person), synced to one calendar.
- */
 import type { PoolClient } from 'pg';
 import type { Db } from '../db';
 import { HttpError } from '../errors';
@@ -121,11 +117,6 @@ export interface WeekReport {
   warnings: { kind: 'no_client' | 'overlap' | 'long_day' | 'empty_day'; message: string }[];
 }
 
-/**
- * "Process my week": merge back-to-back blocks of the same task into one
- * card, then total the week by side, client and day and list what needs
- * attention before the timesheet goes out.
- */
 export async function processWeek(db: PoolClient, weekStart: string, timeZone: string, userId: string): Promise<WeekReport> {
   let entries = await listEntries(db, weekStart, timeZone);
   let merged = 0;
@@ -196,12 +187,6 @@ export interface SyncResult {
   deleted: number;
 }
 
-/**
- * One-click sync of a week to the timeline calendar. Every event is written
- * as BUSY, so the hours count in the calendar's own free/busy and in any
- * timesheet built from it. Idempotent: an unchanged entry is not re-written,
- * and an entry deleted here is deleted there.
- */
 export async function syncWeek(db: PoolClient, weekStart: string, timeZone: string): Promise<SyncResult> {
   const { rows: accounts } = await db.query<{ id: string; label: string; provider: 'mock' | 'google'; external_id: string }>(
     'SELECT id, label, provider, external_id FROM calendar_accounts WHERE is_timeline_target LIMIT 1',
@@ -211,8 +196,6 @@ export async function syncWeek(db: PoolClient, weekStart: string, timeZone: stri
   const provider = calendarProvider(db, account.provider);
   const { from, to } = weekBounds(weekStart, timeZone);
   const { rows: entries } = await db.query<{ id: string; title: string; starts_at: Date; duration_min: number; notes: string | null; client_name: string | null; fp: string }>(
-    // The fingerprint is computed by the same SQL expression listEntries uses,
-    // so the "synced" dot on each card and this check cannot disagree.
     `SELECT e.id, e.title, e.starts_at, e.duration_min, e.notes, c.name AS client_name,
             md5(e.title || '|' || e.starts_at::text || '|' || e.duration_min::text) AS fp
        FROM timeline_entries e LEFT JOIN clients c ON c.id = e.client_id
@@ -252,7 +235,6 @@ export async function syncWeek(db: PoolClient, weekStart: string, timeZone: stri
     if (link) result.updated += 1;
     else result.created += 1;
   }
-  // Links whose entry is gone (deleted, or merged away by "process my week").
   const { rows: orphans } = await db.query<{ origin_id: string; external_event_id: string }>(
     `SELECT l.origin_id, l.external_event_id FROM calendar_sync_links l
       WHERE l.account_id = $1 AND l.origin = 'timeline'

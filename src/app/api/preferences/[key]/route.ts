@@ -2,8 +2,6 @@ import { z } from 'zod';
 import { asUser } from '@/lib/server/db';
 import { HttpError, json, parseBody, withUser } from '@/lib/server/http';
 
-// Preferences follow the person across devices: board sort and filters,
-// backlog filters, shortcuts. Row level security scopes every read and write.
 const KEYS = ['board.view', 'timeline.backlog', 'timeline.view', 'goals.view', 'shortcuts', 'approvals.view'];
 
 function checkKey(key: string) {

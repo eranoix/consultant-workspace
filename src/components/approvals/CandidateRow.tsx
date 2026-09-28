@@ -10,10 +10,6 @@ import { formatDay } from '../board/TaskCard';
 import { useWorkspace } from '../shell/workspace';
 import type { Candidate } from './types';
 
-/**
- * One candidate task with its two buttons. Editing is a separate action and
- * never changes the decision.
- */
 export function CandidateRow({ c, onChange, showSource, onOpenSource }: { c: Candidate; onChange: () => void; showSource?: boolean; onOpenSource?: () => void }) {
   const t = useT();
   const locale = useLocale();

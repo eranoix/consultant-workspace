@@ -1,8 +1,3 @@
-/**
- * Wall-clock helpers in the workspace's time zone. The timeline, the
- * dashboard and the booking page all render in one named zone, so the grid
- * looks the same whatever the viewer's machine is set to.
- */
 import { dateInZone, zonedTimeToUtc } from '@/lib/engine/availability';
 
 export { dateInZone, zonedTimeToUtc };
@@ -12,7 +7,6 @@ export function addDays(iso: string, days: number): string {
   return new Date(Date.UTC(y, m - 1, d) + days * 86_400_000).toISOString().slice(0, 10);
 }
 
-/** 0 = Monday ... 6 = Sunday. */
 export function isoWeekday(iso: string): number {
   const [y, m, d] = iso.split('-').map(Number) as [number, number, number];
   return (new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7;
@@ -26,7 +20,6 @@ export function todayIn(timeZone: string, now = Date.now()): string {
   return dateInZone(now, timeZone);
 }
 
-/** Minutes since local midnight of an instant, in a zone. */
 export function minutesOfDay(ts: number, timeZone: string): number {
   const parts = new Intl.DateTimeFormat('en-GB', { timeZone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
     .formatToParts(new Date(ts));
@@ -53,7 +46,6 @@ export function formatDuration(min: number): string {
 
 export type DeadlineState = 'overdue' | 'today' | 'soon' | 'none';
 
-/** Drives the red and yellow card borders on the board and the dashboard. */
 export function deadlineState(due: string | null, today: string, done = false): DeadlineState {
   if (!due || done) return 'none';
   if (due < today) return 'overdue';

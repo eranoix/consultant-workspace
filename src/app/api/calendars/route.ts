@@ -7,7 +7,6 @@ export const dynamic = 'force-dynamic';
 
 export const GET = withUser(async () => json({ calendars: await listCalendars(pool()) }));
 
-/** Choose the calendar the weekly timeline syncs to. */
 export const PUT = withUser(async (req) => {
   const { timelineTarget } = await parseBody(req, z.object({ timelineTarget: z.string().uuid() }));
   await tx(async (db) => {

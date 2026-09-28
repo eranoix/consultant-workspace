@@ -1,15 +1,3 @@
-/**
- * Mail adapter, used by the email intake and by the notes sync.
- *
- *   mock  reads the mock_mailbox table (default)
- *   imap  a real IMAP server; this build ships the interface and the
- *         configuration check, and expects an IMAP client library to be
- *         plugged in here (see docs/architecture.md)
- *
- * The date of a message is its RECEIVE date (IMAP INTERNALDATE). A mailbox
- * also knows when a message was last modified (flags, moves); showing that
- * one makes a three-week-old email look like it arrived this morning.
- */
 import type { Db } from '../db';
 
 export interface MailMessage {
@@ -30,7 +18,6 @@ export interface MailProvider {
   name: string;
   folders(prefix: string): Promise<string[]>;
   fetch(folder: string, afterUid: number, limit?: number): Promise<MailMessage[]>;
-  /** Every message under a folder prefix (notes sync). */
   fetchTree(prefix: string): Promise<MailMessage[]>;
 }
 
@@ -87,8 +74,6 @@ export class MockMail implements MailProvider {
   }
 
   async fetchTree(prefix: string): Promise<MailMessage[]> {
-    // Folder names from real servers come with different separators and
-    // cases ("Notes.Clients", "notes/clients"); compare them normalised.
     const { rows } = await this.db.query<Row>(
       `SELECT ${COLS} FROM mock_mailbox
         WHERE lower(replace(folder, '.', '/')) = lower($1) OR lower(replace(folder, '.', '/')) LIKE lower($1) || '/%'
@@ -123,7 +108,6 @@ export function mailProvider(db: Db, env: NodeJS.ProcessEnv = process.env): Mail
   return new MockMail(db);
 }
 
-/** "Notes.Clients" / "notes/clients/" / "Notes / Clients" -> "Notes/Clients". */
 export function normalizeFolderPath(raw: string): string {
   return raw
     .replace(/[.\\]/g, '/')

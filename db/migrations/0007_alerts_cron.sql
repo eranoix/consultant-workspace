@@ -1,7 +1,3 @@
--- 0007 alerts and scheduled jobs: an editable rule engine, the alerts it
--- raises, the delivery outbox, and the heartbeats of every cron job,
--- including the one that watches the others.
-
 CREATE TABLE IF NOT EXISTS alert_rules (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name        text NOT NULL,
@@ -15,7 +11,6 @@ CREATE TABLE IF NOT EXISTS alert_rules (
   severity    text NOT NULL DEFAULT 'warning' CHECK (severity IN ('info', 'warning', 'critical')),
   channels    text[] NOT NULL DEFAULT '{outbox}',
   cooldown_min int NOT NULL DEFAULT 60 CHECK (cooldown_min >= 0),
-  -- System rules guard the machinery itself and can be edited, not deleted.
   system      boolean NOT NULL DEFAULT false,
   created_at  timestamptz NOT NULL DEFAULT now(),
   updated_at  timestamptz NOT NULL DEFAULT now()
@@ -36,8 +31,6 @@ CREATE TABLE IF NOT EXISTS alerts (
   updated_at    timestamptz NOT NULL DEFAULT now(),
   resolved_at   timestamptz
 );
--- At most one live alert per condition: re-evaluating a rule every minute
--- must not produce a new row every minute.
 CREATE UNIQUE INDEX IF NOT EXISTS alerts_live_dedupe ON alerts (dedupe_key) WHERE status <> 'resolved';
 CREATE INDEX IF NOT EXISTS alerts_status_idx ON alerts (status, created_at DESC);
 
@@ -63,7 +56,6 @@ CREATE TABLE IF NOT EXISTS cron_jobs (
   interval_sec     int NOT NULL CHECK (interval_sec > 0),
   grace_sec        int NOT NULL DEFAULT 60,
   enabled          boolean NOT NULL DEFAULT true,
-  -- Which job is responsible for noticing that this one went quiet.
   watched_by       text,
   last_started_at  timestamptz,
   last_finished_at timestamptz,

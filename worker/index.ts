@@ -1,8 +1,3 @@
-/**
- * The cron worker: one loop, every job in services/cron.ts, heartbeats in
- * the database. `--healthcheck` exits 0 when this process's own loop has
- * ticked recently, which is what the container healthcheck runs.
- */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { loadEnv } from '../scripts/env';
 import { pool } from '../src/lib/server/db';
@@ -30,8 +25,6 @@ async function loop() {
       await runDue(db, new Date(), log);
       writeFileSync(BEAT_FILE, String(Date.now()));
     } catch (err) {
-      // A tick that fails (database restarting) is retried on the next one;
-      // the heartbeats in the database make the gap visible either way.
       log(`worker: tick failed: ${(err as Error).message}`);
     }
     await new Promise((r) => setTimeout(r, TICK_MS));

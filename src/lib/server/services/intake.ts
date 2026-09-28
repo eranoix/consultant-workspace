@@ -1,8 +1,3 @@
-/**
- * Intake: meetings and emails become sources with a summary and candidate
- * tasks. Nothing here touches the board; that only happens when a person
- * completes a review (see approvals.ts).
- */
 import type { PoolClient } from 'pg';
 import type { Db } from '../db';
 import { tx } from '../db';
@@ -63,7 +58,6 @@ export async function ingest(
       inf.side,
       inf.reason,
       JSON.stringify({ summary: summary.summary, topics: summary.topics, keyDecisions: summary.keyDecisions, provider: summary.provider }),
-      // Outbound mail is a record of the thread, not a request for work.
       outbound || summary.tasks.length === 0 ? 'reviewed' : 'pending',
     ],
   );
@@ -91,7 +85,6 @@ function messageToDraft(m: MailMessage, kind: 'meeting' | 'email', ownDomains: s
     body: m.text,
     fromEmail: m.fromEmail,
     fromName: m.fromName,
-    // Meeting notes arrive from a note-taker; the attendees are the recipients.
     participants: kind === 'email' ? [m.fromEmail, ...m.to] : m.to,
     threadId: m.threadId,
     direction: kind === 'email' && outbound ? 'outbound' : 'inbound',
@@ -99,13 +92,7 @@ function messageToDraft(m: MailMessage, kind: 'meeting' | 'email', ownDomains: s
   };
 }
 
-/**
- * One intake pass over a mail folder: INBOX for emails, "Meetings" for the
- * notes a note-taker sends after each call. A cursor per channel keeps passes
- * incremental; the run is recorded for the intake health panel either way.
- */
 export async function runMailIntake(db: Db, channel: 'email' | 'meeting'): Promise<{ fetched: number; created: number; skipped: number }> {
-  // Sent mail is read too: a reply is what closes an "unanswered" thread.
   const folders = channel === 'email' ? ['INBOX', 'Sent'] : ['Meetings'];
   const run = await db.query<{ id: string }>('INSERT INTO intake_runs (channel) VALUES ($1) RETURNING id', [channel]);
   const runId = run.rows[0]!.id;

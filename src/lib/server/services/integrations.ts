@@ -1,14 +1,3 @@
-/**
- * OAuth connections. Refresh tokens are sealed with AES-256-GCM before they
- * are written and opened only for the moment a refresh needs them. Rows are
- * read and written inside asUser(), so row level security, not a WHERE
- * clause someone might forget, keeps one person's tokens from another.
- *
- * The providers here are mocks: "connect" mints a fake refresh token the way
- * an OAuth callback would hand one over, and "refresh" exchanges it the way a
- * token endpoint would. Swapping in a real provider means replacing those two
- * functions; storage, encryption and rotation stay as they are.
- */
 import { randomBytes } from 'node:crypto';
 import { asUser } from '../db';
 import { HttpError } from '../errors';
@@ -79,11 +68,6 @@ export async function connect(userId: string, providerId: string, account: strin
   );
 }
 
-/**
- * Exchange the stored refresh token (mock). Decrypting proves the key and the
- * row binding are intact; a row sealed with the previous key is re-sealed
- * with the current one on the way through.
- */
 export async function refresh(userId: string, id: string) {
   const ring = keyringFromEnv();
   return asUser(userId, async (db) => {
@@ -124,7 +108,6 @@ export async function disconnect(userId: string, id: string) {
   await asUser(userId, (db) => db.query('DELETE FROM integration_credentials WHERE id = $1', [id]));
 }
 
-/** A mock provider health probe, slow on purpose so the page can stream around it. */
 export async function probe(providerId: string): Promise<{ ok: boolean; latencyMs: number; detail: string }> {
   const latency = { 'google-calendar': 450, mail: 900, whatsapp: 1300 }[providerId] ?? 300;
   await new Promise((r) => setTimeout(r, latency));

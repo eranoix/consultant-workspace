@@ -1,8 +1,3 @@
-/**
- * Keyboard shortcuts: two-key sequences ("g b" = go to board) and single
- * keys ("?" = help). Configurable per person; stored as a preference.
- */
-
 export interface ShortcutAction {
   id: string;
   href?: string;
@@ -35,7 +30,6 @@ export const DEFAULT_SHORTCUTS: Record<string, string> = {
   help: '?',
 };
 
-/** "g  B" -> "g b"; rejects empty, more than two keys, or modifier names. */
 export function normalizeCombo(raw: string): string | null {
   const keys = raw.trim().toLowerCase().split(/\s+/).filter(Boolean);
   if (keys.length === 0 || keys.length > 2) return null;
@@ -53,7 +47,6 @@ export function mergeShortcuts(saved: Record<string, string> | null | undefined)
   return out;
 }
 
-/** Combos used by more than one action, and combos that shadow a longer one ("g" vs "g b"). */
 export function conflicts(map: Record<string, string>): string[] {
   const out = new Set<string>();
   const entries = Object.entries(map);
@@ -69,10 +62,6 @@ export function conflicts(map: Record<string, string>): string[] {
   return [...out];
 }
 
-/**
- * Feed keys one at a time; returns the matched action id, 'pending' when the
- * buffer is a prefix of some combo, or null (buffer reset).
- */
 export function matchSequence(buffer: string[], map: Record<string, string>): string | 'pending' | null {
   const typed = buffer.join(' ');
   for (const [id, combo] of Object.entries(map)) if (combo === typed) return id;

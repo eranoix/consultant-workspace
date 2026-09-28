@@ -26,8 +26,6 @@ export async function listClients(db: Db, opts: { withCounts?: boolean } = {}): 
 }
 
 export async function inferContext(db: Db): Promise<InferContext> {
-  // Sequential on purpose: inside a transaction `db` is one connection, and
-  // a connection runs one query at a time.
   const clients = await db.query<ClientRef & { active: boolean }>('SELECT id, name, aliases, domains, side, active FROM clients');
   const overrides = await db.query<{ kind: SideOverride['kind']; pattern: string; side: Side; client_id: string | null }>(
     'SELECT kind, pattern, side, client_id FROM side_overrides',
@@ -41,7 +39,6 @@ export async function inferContext(db: Db): Promise<InferContext> {
   };
 }
 
-/** The side a client belongs to, used to cascade client -> side on edit. */
 export async function sideOfClient(db: Db, clientId: string | null | undefined): Promise<Side | null> {
   if (!clientId) return null;
   const { rows } = await db.query<{ side: Side }>('SELECT side FROM clients WHERE id = $1', [clientId]);

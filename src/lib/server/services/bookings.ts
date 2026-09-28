@@ -1,9 +1,3 @@
-/**
- * Public booking, on the vendored scheduling engine. Each service picks the
- * calendar it books into (partner work goes on the partner calendar, own
- * clients on her own), and that calendar's busy time is subtracted from the
- * slots, so a client can never book over a partner meeting.
- */
 import { randomBytes } from 'node:crypto';
 import type { PoolClient } from 'pg';
 import type { Db } from '../db';
@@ -74,7 +68,6 @@ async function busyFor(db: Db, service: ServiceRow, from: Date, to: Date): Promi
     const a = acc.rows[0];
     if (a) {
       const events = await calendarProvider(db, a.provider).listBusy(a.external_id, from, to);
-      // Events this app wrote for bookings are already counted above.
       busy.push(...events);
     }
   }
@@ -105,7 +98,6 @@ export async function slotsForDay(db: Db, service: ServiceRow, date: string, now
   };
 }
 
-/** Which of the next N days have at least one slot, for the date picker. */
 export async function openDays(db: Db, service: ServiceRow, fromDate: string, days = 21) {
   const out: { date: string; count: number }[] = [];
   for (let i = 0; i < days; i += 1) {
@@ -125,7 +117,6 @@ export async function createBooking(
   if (Number.isNaN(start.getTime())) throw new HttpError(400, 'Invalid start time');
   const settings = await getSettings(db);
   const day = new Intl.DateTimeFormat('en-CA', { timeZone: settings.profile.timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(start);
-  // Re-check against the engine: the page may be minutes old.
   const { slots: available } = await slotsForDay(db, service, day);
   if (!available.some((s) => s.start === start.getTime())) throw new HttpError(409, 'That time is no longer available');
   const end = new Date(start.getTime() + service.duration_min * 60_000);

@@ -1,9 +1,3 @@
-/**
- * The alert rule engine: events carry a flat payload, rules hold conditions
- * over that payload. Pure, so a rule edited in the UI can be tested against a
- * sample event before it is saved.
- */
-
 export const EVENTS = [
   'email.received',
   'email.unanswered',
@@ -33,7 +27,6 @@ export interface RuleLike {
 
 export type Payload = Record<string, string | number | boolean | null | undefined>;
 
-/** The fields each event offers, for the rule editor's dropdown. */
 export const EVENT_FIELDS: Record<AlertEvent, string[]> = {
   'email.received': ['from_email', 'from_domain', 'subject', 'client', 'side', 'thread_size'],
   'email.unanswered': ['from_email', 'from_domain', 'subject', 'client', 'side', 'hours_unanswered'],
@@ -90,21 +83,15 @@ export function matchRule(rule: RuleLike, event: string, payload: Payload): bool
     : rule.conditions.some((c) => evaluateCondition(c, payload));
 }
 
-/**
- * The key that makes an alert unique while it is live. The same rule firing
- * for the same thing again is the same alert, not a new one.
- */
 export function dedupeKey(ruleId: string, entity: string | null | undefined): string {
   return `${ruleId}:${entity ?? '-'}`;
 }
 
-/** Within cooldown after the last alert for this key was resolved? */
 export function inCooldown(lastResolvedAt: Date | null, cooldownMin: number, now: Date): boolean {
   if (!lastResolvedAt || cooldownMin <= 0) return false;
   return now.getTime() - lastResolvedAt.getTime() < cooldownMin * 60_000;
 }
 
-/** "{title}" placeholders in a rule's name, filled from the payload. */
 export function renderTemplate(tpl: string, payload: Payload): string {
   return tpl.replace(/\{(\w+)\}/g, (m, k: string) => (payload[k] === undefined || payload[k] === null ? m : String(payload[k])));
 }

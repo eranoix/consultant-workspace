@@ -1,8 +1,3 @@
-/**
- * The approval hub's server side. Every write here runs in a transaction and
- * locks the source row first, so two people deciding on the same meeting at
- * once cannot both complete it or both create its board tasks.
- */
 import type { PoolClient } from 'pg';
 import type { Db } from '../db';
 import {
@@ -84,7 +79,6 @@ export async function listSources(
   if (f.side) add('s.side = ?', f.side);
   if (f.clientId) add('s.client_id = ?', f.clientId);
   if (f.q) add("(s.title ILIKE '%' || ? || '%')", f.q);
-  // Outbound mail with no tasks is thread history, not review work.
   where.push("NOT (s.direction = 'outbound')");
   let having = '';
   if (f.decision === 'approved') having = "HAVING count(ct.id) FILTER (WHERE ct.decision = 'approved') > 0";
@@ -127,7 +121,6 @@ export async function getSource(db: Db, id: string) {
   return { ...source, tasks: tasks.rows, thread };
 }
 
-/** The unified Tasks tab: every candidate from meetings and emails in one list. */
 export async function listCandidates(db: Db, f: { decision?: string; side?: string; kind?: string; limit?: number }) {
   const where: string[] = ["s.direction = 'inbound'"];
   const params: unknown[] = [];
@@ -199,7 +192,6 @@ export async function undo(db: PoolClient, candidateId: string) {
     await db.query('DELETE FROM tasks WHERE id = $1', [plan.taskId]);
   }
   await db.query("UPDATE candidate_tasks SET decision = 'pending', decided_at = NULL, decided_by = NULL WHERE id = $1", [c.id]);
-  // Undo reopens a finished review: it has an unclassified task again.
   if (src.status === 'reviewed') {
     await db.query("UPDATE sources SET status = 'pending', reviewed_at = NULL, reviewed_by = NULL WHERE id = $1", [c.source_id]);
   }
@@ -213,7 +205,6 @@ export interface CandidatePatch {
   dueDate?: string | null;
 }
 
-/** Edits never touch the decision; client edits cascade to the side. */
 export async function editCandidate(db: PoolClient, candidateId: string, patch: CandidatePatch) {
   const c = await candidate(db, candidateId);
   const sets: string[] = [];
@@ -232,13 +223,11 @@ export async function editCandidate(db: PoolClient, candidateId: string, patch: 
     else if (patch.side !== undefined) set('side', patch.side);
   } else if (patch.side !== undefined) {
     set('side', patch.side);
-    // A side change clears a client that belongs to the other side.
     params.push(patch.side);
     sets.push(`client_id = CASE WHEN (SELECT side FROM clients WHERE id = client_id) IS DISTINCT FROM $${params.length} THEN NULL ELSE client_id END`);
   }
   if (!sets.length) return;
   await db.query(`UPDATE candidate_tasks SET ${sets.join(', ')} WHERE id = $1`, params);
-  // Keep an already-created board task in step with the edit.
   if (c.task_id) {
     await db.query(
       `UPDATE tasks t SET title = ct.title, description = ct.details, client_id = ct.client_id, side = ct.side, due_date = ct.due_date
@@ -248,11 +237,6 @@ export async function editCandidate(db: PoolClient, candidateId: string, patch: 
   }
 }
 
-/**
- * Editing a source's client or side: it is locked against re-inference and
- * the change cascades to its candidate tasks that are still pending, so the
- * person fixes the client once instead of once per task.
- */
 export async function editSource(db: PoolClient, id: string, patch: { title?: string; clientId?: string | null; side?: Side | null }) {
   await lockSource(db, id);
   if (patch.title !== undefined) await db.query('UPDATE sources SET title = $2 WHERE id = $1', [id, patch.title]);
@@ -279,7 +263,6 @@ export async function editSource(db: PoolClient, id: string, patch: { title?: st
   }
 }
 
-/** "Done": requires every task classified; creates board tasks for the approved ones. */
 export async function completeReview(db: PoolClient, sourceId: string, userId: string) {
   const src = await lockSource(db, sourceId);
   const { rows } = await db.query<{
@@ -306,8 +289,6 @@ export async function completeReview(db: PoolClient, sourceId: string, userId: s
   const created: string[] = [];
   for (const cid of plan.toCreate) {
     const r = rows.find((x) => x.id === cid)!;
-    // A task without its own client inherits the source's, so nothing lands
-    // on the board with an empty Client field when the meeting had one.
     const clientId = r.client_id ?? fallback?.client_id ?? null;
     const side = r.side ?? fallback?.side ?? null;
     const pos = await nextPosition(db, 'backlog');

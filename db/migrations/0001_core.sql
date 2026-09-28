@@ -1,11 +1,3 @@
--- 0001 core: people, workspace settings, clients, side rules, per-user
--- preferences and the realtime plumbing every later table plugs into.
---
--- Every statement is idempotent (IF NOT EXISTS, OR REPLACE, DROP ... IF
--- EXISTS before CREATE POLICY), so a half-applied file can be re-run. The
--- runner still refuses a file whose checksum changed after it was applied:
--- idempotent is not the same as editable.
-
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 
@@ -19,15 +11,12 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    timestamptz NOT NULL DEFAULT now()
 );
 
--- Small, typed-in-code settings: profile, partner firm, working hours.
 CREATE TABLE IF NOT EXISTS workspace_settings (
   key        text PRIMARY KEY,
   value      jsonb NOT NULL,
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 
--- A client belongs to one side of the consultant's work: the partner firm
--- she subcontracts for, or her own direct practice.
 CREATE TABLE IF NOT EXISTS clients (
   id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name       text NOT NULL UNIQUE,
@@ -40,8 +29,6 @@ CREATE TABLE IF NOT EXISTS clients (
   created_at timestamptz NOT NULL DEFAULT now()
 );
 
--- Deterministic overrides for side and client inference. They win over
--- anything read from content, so a known sender is never re-guessed.
 CREATE TABLE IF NOT EXISTS side_overrides (
   id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   kind       text NOT NULL CHECK (kind IN ('sender', 'domain', 'keyword')),
@@ -53,8 +40,6 @@ CREATE TABLE IF NOT EXISTS side_overrides (
   UNIQUE (kind, pattern)
 );
 
--- Per-user preferences (board sort and filters, shortcuts, sidebar state).
--- Row level security: a session only ever sees its own rows.
 CREATE TABLE IF NOT EXISTS user_preferences (
   user_id    uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   key        text NOT NULL,
@@ -77,9 +62,6 @@ BEGIN
   RETURN NEW;
 END $$;
 
--- One channel for every change the UI cares about. The payload stays tiny
--- (table, operation, id): listeners refetch, so a NOTIFY never carries data a
--- subscriber might not be allowed to see.
 CREATE OR REPLACE FUNCTION notify_change() RETURNS trigger
 LANGUAGE plpgsql AS $$
 DECLARE

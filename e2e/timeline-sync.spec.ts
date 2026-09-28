@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { dragAndDrop, signIn } from './helpers';
 
-// Critical flow 3: plan a task on the week, edit its duration with a live end
-// preview, and sync the week to the calendar.
 test('a task dragged onto the week is edited and synced to the calendar', async ({ page }) => {
   await signIn(page);
   await page.goto('/app/timeline');
@@ -14,7 +12,6 @@ test('a task dragged onto the week is edited and synced to the calendar', async 
   await expect(task).toBeVisible();
   await task.evaluate((el) => el.setAttribute('data-e2e-source', '1'));
   const dayId = await firstDay.getAttribute('data-testid');
-  // 7:00 is the top of the grid at 0.8 px per minute: 600 px is 19:30, a free slot.
   await dragAndDrop(page, '[data-e2e-source="1"]', `[data-testid="${dayId}"]`, 600);
 
   const entry = firstDay.getByTestId('timeline-entry').filter({ hasText: 'Renew professional liability insurance' });

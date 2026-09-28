@@ -80,7 +80,6 @@ function Toolbar({ editor }: { editor: Editor }) {
   );
 }
 
-/** Autosaves a second after the last keystroke; the status shows what is on the server. */
 export function NoteEditor({ note, onSaved, onDelete }: { note: NoteDoc; onSaved: () => void; onDelete: () => void }) {
   const t = useT();
   const [title, setTitle] = useState(note.title);

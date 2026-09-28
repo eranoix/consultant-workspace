@@ -72,7 +72,6 @@ export function Badge({ tone = 'neutral', children, className }: { tone?: 'neutr
   return <span className={cx('inline-flex items-center gap-1 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-medium ring-1 ring-inset', tones[tone], className)}>{children}</span>;
 }
 
-/** The partner firm vs own-client tag, used everywhere a task or source shows. */
 export function SideTag({ side, partnerLabel }: { side: 'partner' | 'direct' | null | undefined; partnerLabel?: string }) {
   const t = useT();
   if (!side) return <Badge tone="neutral">{t('common.side.unknown')}</Badge>;
@@ -167,7 +166,6 @@ export function Modal({ open, onClose, title, children, footer, wide }: { open: 
   );
 }
 
-/** Right-hand drawer, the detail view pattern across the app. */
 export function Drawer({ open, onClose, title, children, footer, width = 'max-w-xl' }: { open: boolean; onClose: () => void; title: ReactNode; children: ReactNode; footer?: ReactNode; width?: string }) {
   const t = useT();
   const panel = useRef<HTMLDivElement>(null);

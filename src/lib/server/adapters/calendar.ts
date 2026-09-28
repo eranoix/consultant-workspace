@@ -1,12 +1,3 @@
-/**
- * Calendar adapter. The timeline sync and the booking page talk to this
- * interface only; which calendar service sits behind it is configuration.
- *
- *   mock    rows in mock_calendar_events (default; works with no account)
- *   google  Google Calendar API v3, using GOOGLE_CLIENT_ID/SECRET and a
- *           refresh token. Written against the public API, exercised only
- *           when those variables are set.
- */
 import type { Db } from '../db';
 
 export interface CalendarEventInput {
@@ -14,7 +5,6 @@ export interface CalendarEventInput {
   description?: string;
   startsAt: Date;
   endsAt: Date;
-  /** Busy events count against availability and timesheets. */
   busy: boolean;
 }
 

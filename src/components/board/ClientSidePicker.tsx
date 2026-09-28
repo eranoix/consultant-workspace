@@ -4,11 +4,6 @@ import { useT } from '@/i18n/client';
 import { Field } from '../ui';
 import { useClients, useWorkspace } from '../shell/workspace';
 
-/**
- * Side and client, cascading both ways: picking a side narrows the client
- * list to that side, picking a client sets the side to the client's. The two
- * can never disagree, which is what the board's side filter relies on.
- */
 export function ClientSidePicker({
   clientId,
   side,

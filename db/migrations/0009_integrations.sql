@@ -1,7 +1,3 @@
--- 0009 integrations: OAuth refresh tokens, encrypted with AES-256-GCM before
--- they reach this table. The database never sees a token in clear, and row
--- level security keeps each person's credentials to themselves.
-
 CREATE TABLE IF NOT EXISTS integration_credentials (
   id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id           uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,

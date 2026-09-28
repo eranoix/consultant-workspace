@@ -1,9 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { signIn } from './helpers';
 
-// Critical flow 2: a token created in settings can create and move tasks
-// through the API, is refused what its role does not allow, and its work
-// shows up on the board.
 test('a contributor token creates and moves a task but cannot delete it', async ({ page, request }) => {
   await signIn(page);
   await page.goto('/app/settings/api');

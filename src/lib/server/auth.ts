@@ -18,14 +18,12 @@ export async function getSession(): Promise<SessionPayload | null> {
   return verifySession(jar.get(SESSION_COOKIE)?.value);
 }
 
-/** The signed-in user, re-read from the database so a deleted user is out. */
 export async function currentUser(): Promise<CurrentUser | null> {
   const session = await getSession();
   if (!session) return null;
   return queryOne<CurrentUser>('SELECT id, name, email, role, locale FROM users WHERE id = $1', [session.uid]);
 }
 
-/** For server components and pages: bounce to the sign-in page. */
 export async function requireUser(): Promise<CurrentUser> {
   const user = await currentUser();
   if (!user) redirect('/login');

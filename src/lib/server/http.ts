@@ -20,7 +20,6 @@ export function errorResponse(err: unknown): NextResponse {
       { status: 400 },
     );
   }
-  // Postgres constraint violations are the client's problem, not a crash.
   const pgCode = (err as { code?: string })?.code;
   if (pgCode === '23505') return NextResponse.json({ error: 'Already exists' }, { status: 409 });
   if (pgCode === '23P01') return NextResponse.json({ error: 'That time is no longer available' }, { status: 409 });
@@ -43,10 +42,6 @@ export async function parseBody<T>(req: Request, schema: ZodType<T>): Promise<T>
 
 type Ctx<P> = { params: Promise<P> };
 
-/**
- * Route handler wrapper for the signed-in app API: resolves the user (401
- * otherwise), awaits the params, and turns thrown errors into JSON.
- */
 export function withUser<P = Record<string, string>>(
   handler: (req: Request, ctx: { user: CurrentUser; params: P }) => Promise<Response>,
 ) {

@@ -1,7 +1,3 @@
-/**
- * Board tasks. Shared by the app's own API and the token API, so a task
- * created by a tool follows exactly the same rules as one created by hand.
- */
 import { z } from 'zod';
 import type { Db } from '../db';
 import { HttpError } from '../errors';
@@ -77,7 +73,6 @@ export async function listTasks(
   else if (f.clientId) add('t.client_id = ?', f.clientId);
   if (f.side) add('t.side = ?', f.side);
   if (f.q) add("(t.title ILIKE '%' || ? || '%' OR t.description ILIKE '%' || ? || '%')", f.q);
-  // Done tasks older than two weeks leave the board; they are still in the API.
   if (!f.includeDone && !f.status) where.push("(t.status <> 'done' OR t.completed_at > now() - interval '14 days')");
   params.push(Math.min(f.limit ?? 500, 1000));
   const { rows } = await db.query<TaskRow>(
@@ -164,10 +159,6 @@ export async function updateTask(db: Db, id: string, patch: TaskPatchInput): Pro
   return getTask(db, id);
 }
 
-/**
- * Move to a column, optionally between two neighbours. Positions are floats:
- * dropping between 1024 and 2048 writes 1536, so a move touches one row.
- */
 export async function moveTask(db: Db, id: string, status: TaskStatus, beforeId?: string | null, afterId?: string | null) {
   const pos = async (tid: string | null | undefined) =>
     tid ? ((await db.query<{ position: number }>('SELECT position FROM tasks WHERE id = $1', [tid])).rows[0]?.position ?? null) : null;

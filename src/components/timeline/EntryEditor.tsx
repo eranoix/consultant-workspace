@@ -10,11 +10,6 @@ import { Button, Field, Modal, useToast } from '../ui';
 import { ClientSidePicker } from '../board/ClientSidePicker';
 import type { Entry } from './types';
 
-/**
- * Editing one block. The duration field starts empty with the current value
- * as its placeholder, so typing replaces it instead of appending to it, and
- * the end time updates as you type.
- */
 export function EntryEditor({ entry, timeZone, onClose, onSaved }: { entry: Entry | null; timeZone: string; onClose: () => void; onSaved: () => void }) {
   const t = useT();
   const toast = useToast();

@@ -10,12 +10,6 @@ import { useT } from '@/i18n/client';
 import { cx } from '../ui';
 import { HUBS, isActive } from './nav';
 
-/**
- * A 4rem rail that expands OVER the content on hover or keyboard focus, so
- * opening it never reflows the page underneath. It collapses as soon as an
- * item is chosen: keeping it open while focus stays inside it (the obvious
- * :focus-within implementation) leaves it stuck open after every click.
- */
 export function Sidebar() {
   const t = useT();
   const pathname = usePathname();
@@ -47,7 +41,6 @@ export function Sidebar() {
       onMouseEnter={enter}
       onMouseLeave={leave}
       onFocus={(e) => {
-        // Only keyboard focus opens it; a mouse click focuses too.
         if ((e.target as HTMLElement).matches(':focus-visible')) setOpen(true);
       }}
       onBlur={(e) => {

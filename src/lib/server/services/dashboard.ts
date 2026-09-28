@@ -1,7 +1,3 @@
-/**
- * The day summary: a handful of numbers, and a short list of things worth
- * doing next, each with the link that does it.
- */
 import type { Db } from '../db';
 import { getSettings } from '../settings';
 import { addDays, dateInZone, mondayOf, zonedTimeToUtc } from '@/lib/domain/time';

@@ -5,7 +5,6 @@ import { deleteTask, getTask, TaskPatch, updateTask } from '@/lib/server/service
 
 export const GET = withToken<{ id: string }>('tasks:read', async (_req, { params }) => json(await getTask(pool(), params.id)));
 
-// Moving is its own permission: PATCH refuses a status change.
 export const PATCH = withToken<{ id: string }>('tasks:update', async (req, { params }) => {
   const { status: _status, ...patch } = await parseBody(req, TaskPatch);
   return json(await updateTask(pool(), params.id, patch));

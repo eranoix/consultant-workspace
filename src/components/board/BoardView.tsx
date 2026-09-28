@@ -53,7 +53,6 @@ export function BoardView({ today }: { today: string }) {
   const client = clientParam ?? prefs.client;
 
   const { data, mutate } = useSWR<{ tasks: Task[] }>('/api/tasks', fetcher);
-  // Anyone (another admin, a token, an approval) changing a task refreshes the board.
   useLive(['tasks'], () => void mutate());
 
   const filtered = useMemo(() => {
@@ -86,13 +85,11 @@ export function BoardView({ today }: { today: string }) {
     const after = index > 0 ? others[index - 1] ?? null : null;
     const current = data.tasks.find((x) => x.id === id);
     if (!current) return;
-    // Optimistic: move the card now, reconcile with the server's answer.
     const guess = before && after ? (before.position + after.position) / 2 : before ? before.position - 1024 : after ? after.position + 1024 : 1024;
     await mutate({ tasks: data.tasks.map((x) => (x.id === id ? { ...x, status, position: guess } : x)) }, { revalidate: false });
     try {
       await api(`/api/tasks/${id}/move`, {
         method: 'POST',
-        // Manual order only means something when the column is sorted manually.
         body: col.sort === 'manual' ? { status, beforeId: before?.id ?? null, afterId: after?.id ?? null } : { status },
       });
       if (current.status !== status) toast(t('board.toast.moved', { column: t(`board.columns.${status}`) }));
