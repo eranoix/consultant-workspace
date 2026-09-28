@@ -1,0 +1,7 @@
+app
+compose
+db
+deps
+e2e
+i18n
+worker
